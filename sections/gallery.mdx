@@ -36,23 +36,23 @@ Create the file `content/gallery.md` with `layout: "gallery"` in its front matte
 
 ```yaml
 ---
-title: "Photo Gallery"
-description: "My photo collection 🎉"
+title: "Image Gallery"
+description: "My gallery :earth_asia:"
 layout: "gallery"
-viewer: true
-viewerOptions:
-  title: false
-  # Add more viewer.js options here
 galleryImages:
   - src: /images/gallery/photo1.jpg
   - src: /images/gallery/photo2.jpg
   - src: /images/gallery/photo3.jpg
+viewer: true
+viewerOptions:
+  title: false
+  # you can add more options here. refer https://github.com/fengyuanchen/viewerjs?tab=readme-ov-file#options
 ---
 ```
 
 ## Adding Gallery to the Navigation Menu
 
-To make the gallery accessible from the top navigation bar, add a `menu.main` entry to your `hugo.yaml`:
+To make the gallery accessible from the top navigation bar, add an entry to the `Menus.main` list in your `hugo.yaml`:
 
 ```yaml
 Menus:
@@ -70,13 +70,12 @@ Menus:
 
 ## viewer.js Options
 
-The `viewerOptions` front matter field accepts any configuration object supported by viewer.js and is spread directly into the constructor call. For example, to disable the image title overlay and enable inline mode:
+The `viewerOptions` front matter field accepts any configuration object supported by viewer.js and is passed directly into the constructor call. For example, to disable the image title overlay:
 
 ```yaml
 viewerOptions:
   title: false
-  inline: false
-  toolbar: true
+  # you can add more options here. refer https://github.com/fengyuanchen/viewerjs?tab=readme-ov-file#options
 ```
 
 Refer to the full [viewer.js documentation](https://github.com/fengyuanchen/viewerjs?tab=readme-ov-file#options) for all available options.
@@ -88,6 +87,15 @@ If `cloudinary_cloud_name` is set in `params`, Hugo Profile can serve responsive
 ```
 {{</* dynamic-img src="/image/path.jpg" title="My Image" width="w_800" */>}}
 ```
+
+The shortcode accepts the following parameters:
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `src` | Image path on Cloudinary (required) | — |
+| `title` | Alt text and tooltip for the image | — |
+| `width` | Cloudinary width transformation (e.g., `w_800`) | `w_auto` |
+| `style` | Inline CSS applied to the `<img>` element | `max-width:80%` |
 
 <Info>
   The `dynamic-img` shortcode requires your images to be uploaded and hosted on Cloudinary. Set `params.cloudinary_cloud_name` to your Cloudinary cloud name in `hugo.yaml` to activate this feature.

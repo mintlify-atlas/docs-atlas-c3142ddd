@@ -4,7 +4,7 @@ sidebarTitle: "Blog"
 description: "Hugo Profile includes a full blog with list and single post views, reading time, scroll progress bar, tags, social sharing, and recent posts in the footer."
 ---
 
-Hugo Profile includes a fully featured blog section at `content/blogs/` with both list and single-post views. Posts support featured images, tags, a table of contents, math rendering, and an enhanced reading experience powered by scroll progress and reading time indicators.
+Hugo Profile includes a fully featured blog section at `content/blogs/` with both list and single-post views. Posts support featured images, tags, a table of contents, and an enhanced reading experience powered by scroll progress and reading time indicators.
 
 ## Creating a New Post
 
@@ -18,7 +18,7 @@ Hugo's archetype system automatically adds the standard frontmatter fields for y
 
 ## Blog Post Frontmatter
 
-Each post in `content/blogs/` uses the following frontmatter fields:
+Each post in `content/blogs/` uses the following frontmatter fields. These match the fields defined in `archetypes/default.md`:
 
 | Field         | Type    | Description                                              |
 |---------------|---------|----------------------------------------------------------|
@@ -30,7 +30,6 @@ Each post in `content/blogs/` uses the following frontmatter fields:
 | `description` | string  | Short summary used in meta tags and post cards          |
 | `tags`        | array   | List of tag strings for categorization                  |
 | `toc`         | boolean | Set to `true` to show the table of contents sidebar     |
-| `mathjax`     | boolean | Set to `true` to enable MathJax on this post            |
 
 Here is a complete example frontmatter block:
 
@@ -47,7 +46,6 @@ tags:
   - Tutorial
   - Web
 toc: true
-mathjax: false
 ---
 ```
 
@@ -123,18 +121,6 @@ params:
     disableFeaturedImage: false
 ```
 
-## Date Formatting
-
-Hugo Profile uses Go time format strings to control how dates are rendered in different contexts. All three are set under `params.datesFormat`:
-
-```yaml
-params:
-  datesFormat:
-    article: "Jan 2, 2006"         # Date on single post pages
-    articleList: "Jan 2, 2006"     # Date on the blog list page
-    articleRecent: "Jan 2, 2006"   # Date in the footer recent posts
-```
-
 <Tip>
-  Go's reference time is `Mon Jan 2 15:04:05 MST 2006`. Use this as your template when writing custom date formats — for example, `"January 2, 2006"` for a fully written-out date.
+  Hugo Profile uses Go's built-in reference time for date rendering: `Mon Jan 2 15:04:05 MST 2006`. Dates on list and single post pages are formatted automatically by the theme's templates using Hugo's built-in locale-aware formats.
 </Tip>

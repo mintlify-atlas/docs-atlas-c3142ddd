@@ -22,7 +22,7 @@ params:
     disableSearch: false   # Set to true to remove the search box entirely
 ```
 
-The search input is visible in the navbar on desktop viewports. On mobile it is hidden in the collapsed navbar by default.
+The search input is visible in the navbar on desktop viewports. On mobile, a second search input is shown inside the collapsed navbar menu.
 
 ### Customizing the Placeholder Text
 
@@ -55,18 +55,7 @@ outputs:
 
 ## Search Index Format
 
-The `index.json` template (`layouts/_default/index.json`) iterates over all pages recursively and serializes each one as a JSON object:
-
-```yaml
-# Each entry in index.json contains:
-# - title       — the page title
-# - description — the page description param
-# - content     — full rendered HTML content
-# - image       — the featured image param
-# - permalink   — absolute URL to the page
-```
-
-The raw template that produces this output is:
+The `index.json` template (`layouts/_default/index.json`) iterates over all pages recursively and serializes each one as a JSON object. The raw template that produces this output is:
 
 ```
 {{- $.Scratch.Add "index" slice -}}
@@ -76,6 +65,16 @@ The raw template that produces this output is:
 {{- end -}}
 {{- $.Scratch.Get "index" | jsonify -}}
 ```
+
+Each entry in `index.json` contains:
+
+| Field         | Source                    |
+|---------------|---------------------------|
+| `title`       | Page title                |
+| `description` | `description` frontmatter |
+| `content`     | Full rendered HTML        |
+| `image`       | `image` frontmatter       |
+| `permalink`   | Absolute URL to the page  |
 
 ## Search Behaviour
 

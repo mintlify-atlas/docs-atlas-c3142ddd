@@ -71,7 +71,7 @@ Hex color values that start with `#` **must** be wrapped in YAML quotation marks
 
 ### Dark Mode
 
-All fields under `params.color.darkmode` mirror the light mode fields exactly. They are applied whenever the `dark` class is present on `<body>`.
+All fields under `params.color.darkmode` mirror the light mode fields exactly. They are applied whenever the `dark` class is present on `<html>` or `<body>` (the theme toggle and the default-theme scripts add the class to both elements simultaneously).
 
 <ParamField path="params.color.darkmode.textColor" type="string" default="#e4e6eb">
   Primary text color in dark mode.

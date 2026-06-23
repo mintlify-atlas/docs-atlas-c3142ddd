@@ -56,7 +56,7 @@ Add each project as an entry under `params.projects.items`. The following fields
 
 ## Example Configuration
 
-The following example adds two projects to the section, taken from the theme's example site:
+The following example adds three projects to the section, matching the theme's example site:
 
 ```yaml
 params:
@@ -83,7 +83,7 @@ params:
             url: https://twitter.com/intent/tweet?text=Check+it+out:&url=https%3A%2F%2Fgithub.com%2Fgurusabarish%2Fhugo-profile
 
       - title: Image Converter
-        content: A web app to convert image to pdf, png to jpg, and png to webp without a database using Django.
+        content: A web app to convert image to pdf, png to jpg, png to jpg and png to webp without database using django.
         image: /images/projects/converter.jpg
         featured:
           name: Demo
@@ -94,6 +94,20 @@ params:
         links:
           - icon: fab fa-github
             url: https://github.com/gurusabarish/converter
+
+      - title: Hugo Profile V2
+        content: A clean and simple Hugo template for personal portfolio and blog.
+        image: /images/projects/profile2.jpg
+        featured:
+          name: Demo V2
+          link: https://hugo-profile-2.netlify.app
+        badges:
+          - "Hugo"
+          - "Bootstrap"
+          - "Javascript"
+        links:
+          - icon: fab fa-github
+            url: https://github.com/gurusabarish/HugoProfileV2
 ```
 
 <Note>

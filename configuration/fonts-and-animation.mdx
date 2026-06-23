@@ -43,7 +43,7 @@ These settings affect the **base** body font only. Headings, the hero name (`h1`
 
 ## Animation
 
-<ParamField path="params.animate" type="boolean" default="true">
+<ParamField path="params.animate" type="boolean" default="false">
   Enables CSS-based fade animations on the home page. When `true`:
 
   - The **navbar** fades down from above (`fade-up` keyframe, 0.5 s ease-in) when the page loads
@@ -77,7 +77,7 @@ params:
 ```
 
 <Warning>
-Content in `customScripts` is rendered as raw HTML. Make sure `markup.goldmark.renderer.unsafe` is set to `true` in your `hugo.yaml`, otherwise Hugo may strip or escape the script tags in certain rendering contexts.
+Content in `customScripts` is inserted as raw HTML into the page via Hugo's `safeHTML` function in a Go template — it is **not** processed through Markdown. You do not need `markup.goldmark.renderer.unsafe` for `customScripts` to work. Keep your scripts free of untrusted user input, since the value is rendered verbatim on every page.
 </Warning>
 
 ## MathJax

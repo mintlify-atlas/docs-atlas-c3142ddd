@@ -25,15 +25,15 @@ These fields apply to both contact modes:
 </ParamField>
 
 <ParamField path="params.contact.btnName" type="string">
-  Label text for the submit or mailto button (e.g., `"Mail me"` or `"Send Message"`).
+  Label text for the submit or mailto button. Falls back to the i18n string `"Get in Touch"` when omitted.
 </ParamField>
 
 ## Mode 1 — Mailto Button
 
-The simplest setup: a single button that opens the visitor's default mail client with a pre-addressed email.
+The simplest setup: a single button that opens the visitor's default mail client with a pre-addressed email. The section renders this mode when `formspree.enable` is not `true` and at least one of `btnLink` or `email` is set.
 
 <ParamField path="params.contact.btnLink" type="string">
-  The full `mailto:` URL for the button (e.g., `mailto:hello@example.com`). Takes priority over `email` if both are set.
+  The full `mailto:` URL (or any URL) for the button (e.g., `mailto:hello@example.com`). When both `btnLink` and `email` are set, `btnLink` takes priority.
 </ParamField>
 
 <ParamField path="params.contact.email" type="string">
@@ -42,7 +42,7 @@ The simplest setup: a single button that opens the visitor's default mail client
 
 ## Mode 2 — FormSpree Form
 
-Enable an embedded contact form powered by [FormSpree](https://formspree.io). When active, `btnLink` and `email` are ignored.
+Enable an embedded contact form powered by [FormSpree](https://formspree.io). When `formspree.enable` is `true`, the mailto button mode is bypassed entirely.
 
 <ParamField path="params.contact.formspree.enable" type="boolean" default="false">
   Set to `true` to switch from the mailto button to the embedded FormSpree form.
@@ -53,11 +53,11 @@ Enable an embedded contact form powered by [FormSpree](https://formspree.io). Wh
 </ParamField>
 
 <ParamField path="params.contact.formspree.emailCaption" type="string">
-  Placeholder text for the email input field. Defaults to the i18n string `"Your email address"`.
+  Placeholder text for the email input field. Defaults to the i18n string `"Enter your email"`.
 </ParamField>
 
 <ParamField path="params.contact.formspree.messageCaption" type="string">
-  Placeholder text for the message textarea. Defaults to the i18n string `"Your message"`.
+  Placeholder text for the message textarea. Defaults to the i18n string `"Enter your message"`.
 </ParamField>
 
 <ParamField path="params.contact.formspree.messageRows" type="integer" default="3">
@@ -75,7 +75,7 @@ Enable an embedded contact form powered by [FormSpree](https://formspree.io). Wh
         # title: "Get in Touch"   # uncomment to override the default heading
         content: My inbox is always open. Whether you have a question or just want to say hi, I'll try my best to get back to you!
         btnName: Mail me
-        btnLink: mailto:hello@example.com
+        btnLink: mailto:gurusabarisha@gmail.com
     ```
   </Tab>
   <Tab title="FormSpree Form">

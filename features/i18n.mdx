@@ -229,16 +229,29 @@ other = "min read"
 
 ## Overriding Specific Translations
 
-To change individual strings without creating or modifying an i18n file, use `params.terms` in `hugo.yaml`. These values take precedence over the i18n lookup:
+To change individual strings without creating or modifying an i18n file, use `params.terms` in `hugo.yaml`. These values take precedence over the i18n lookup. The full set of overridable term keys is:
 
 ```yaml
 params:
   terms:
-    read: "Read More"
-    toc: "Contents"
+    read: "Read"
+    toc: "Table Of Contents"
+    tags: "Tags"
+    social: "Social"
     copyright: "All rights reserved"
     emailText: "Check out this site"
+    pageNotFound: "Page not found"
 ```
+
+| Key           | Used in                                      |
+|---------------|----------------------------------------------|
+| `read`        | "Read" button on list page and footer cards  |
+| `toc`         | Table of contents heading on single posts    |
+| `tags`        | Tags section heading on single posts         |
+| `social`      | Social share heading on single posts         |
+| `copyright`   | Footer copyright notice                      |
+| `emailText`   | Email share link body text                   |
+| `pageNotFound`| 404 page heading and image alt text          |
 
 <Note>
   `params.terms` overrides apply globally across all languages. If you need language-specific overrides, use the i18n files — one per language — rather than `params.terms`.

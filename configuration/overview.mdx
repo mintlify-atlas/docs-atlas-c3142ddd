@@ -63,8 +63,8 @@ All fields below live under the top-level `params:` key.
   When `true`, MathJax is loaded on every page of the site. You can also enable it selectively per page by adding `mathjax: true` to that page's frontmatter.
 </ParamField>
 
-<ParamField path="params.animate" type="boolean" default="true">
-  Enables CSS fade animations on the home page. When `true`, the hero content fades in from the left, the navbar fades down from the top, and the hero image fades in. Set to `false` for an instant, static render.
+<ParamField path="params.animate" type="boolean" default="false">
+  Enables CSS fade animations on the home page. When `true`, the hero content fades in from the left, the navbar fades down from the top, and the hero image fades in. When omitted or set to `false`, all elements render immediately with no entrance transition.
 </ParamField>
 
 ## Minimal Working Example
