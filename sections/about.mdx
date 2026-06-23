@@ -1,0 +1,94 @@
+---
+title: "Configure the About Section in Hugo Profile"
+sidebarTitle: "About"
+description: "Add your bio, profile photo, and skills list to the Hugo Profile About section using params.about in your hugo.yaml configuration file."
+---
+
+The About section displays a biographical paragraph, an optional profile photo, and a bulleted skills list. It gives visitors a quick summary of who you are and what technologies you work with. All configuration lives under `params.about` in your `hugo.yaml`.
+
+## Enable the section
+
+<ParamField path="params.about.enable" type="boolean" default="false">
+  Set to `true` to render the About section on your home page.
+</ParamField>
+
+## Content fields
+
+<ParamField path="params.about.title" type="string">
+  The heading displayed at the top of the section. Defaults to the i18n key `"About Me"` if omitted, making it straightforward to localise.
+</ParamField>
+
+<ParamField path="params.about.image" type="string">
+  Path to your profile photo (e.g., `/images/me.png`). The image is rendered with a circular `rounded-circle` style on desktop screens. On small (mobile) screens it is hidden automatically to keep the layout clean.
+</ParamField>
+
+<ParamField path="params.about.content" type="string">
+  Your bio text. Supports full Markdown — include links, bold text, or line breaks as needed. Use the `|-` YAML block scalar to write multi-paragraph content without trailing newlines:
+
+  ```yaml
+  content: |-
+    First paragraph text here.
+
+    Second paragraph text here.
+  ```
+</ParamField>
+
+## Skills list
+
+<ParamField path="params.about.skills.enable" type="boolean">
+  Set to `true` to render the skills list beneath the bio content.
+</ParamField>
+
+<ParamField path="params.about.skills.title" type="string">
+  A short heading rendered above the skills list (e.g., `"Here are a few technologies I've been working with recently:"`).
+</ParamField>
+
+<ParamField path="params.about.skills.items" type="array">
+  An array of skill name strings. Each string is rendered as a list item and supports Markdown.
+
+  ```yaml
+  items:
+    - "HTML"
+    - "CSS"
+    - "JavaScript"
+    - "React"
+    - "Node"
+    - "Express"
+  ```
+</ParamField>
+
+<Note>
+  The profile image is hidden on small screens (`d-none d-sm-none d-md-block` Bootstrap classes). If you only need the text layout, you can safely omit the `image` field entirely.
+</Note>
+
+## Complete example
+
+```yaml
+params:
+  about:
+    enable: true
+    title: "About Me"
+    image: "/images/me.png"
+    content: |-
+      I am a software developer with a passion for web development. I have a background in
+      computer science and mathematics, and I have a strong interest in the intersection of
+      technology and art. I am currently working as a software developer at
+      [example org.](https://example.com) in San Francisco, CA.
+
+      I am currently working on a project that will be used to help people find the best
+      way to get around the city.
+    skills:
+      enable: true
+      title: "Here are a few technologies I've been working with recently:"
+      items:
+        - "HTML"
+        - "CSS"
+        - "JavaScript"
+        - "React"
+        - "Node"
+        - "Express"
+```
+
+<Tip>
+  Like the hero section, `params.about` supports per-language overrides. Add a `params.about` block under your language entry (e.g., `languages.es.params.about`) to provide a translated title and bio for multilingual sites.
+</Tip>

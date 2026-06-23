@@ -1,0 +1,117 @@
+---
+title: "Fonts, Animation, and Display Settings"
+sidebarTitle: "Fonts & Animation"
+description: "Configure typography, font size, line height, and page animations in Hugo Profile via params.font and params.animate."
+---
+
+Hugo Profile lets you fine-tune base typography and control whether the home page uses fade-in animations — all through `hugo.yaml`. Font settings are applied directly to the `<body>` element as inline CSS at build time, so they cascade to every component automatically. The theme ships with three preloaded Google Fonts (Alata, Lora, and Roboto) and uses Bootstrap's default font stack as a fallback.
+
+## Font Configuration
+
+All four fields live under `params.font` and map 1-to-1 with CSS properties on `body`.
+
+<ParamField path="params.font.fontSize" type="string" default="1rem">
+  Base font size for body text. Accepts any valid CSS size value (`px`, `rem`, `em`). All other type sizes in the theme are derived from this value using relative units.
+</ParamField>
+
+<ParamField path="params.font.fontWeight" type="number" default="400">
+  Base font weight for body text. Standard values are `100`, `300`, `400`, `500`, `700`, and `900`. The preloaded Roboto font supports all of these weights in both normal and italic variants.
+</ParamField>
+
+<ParamField path="params.font.lineHeight" type="number" default="1.5">
+  Base line height as a unitless multiplier relative to `fontSize`. The default of `1.5` matches Bootstrap's body line height.
+</ParamField>
+
+<ParamField path="params.font.textAlign" type="string" default="left">
+  Base text alignment for body content. Accepts standard CSS values: `"left"`, `"center"`, `"right"`, or `"justify"`.
+</ParamField>
+
+### Font YAML Example
+
+```yaml
+params:
+  font:
+    fontSize: 1rem      # default: 1rem
+    fontWeight: 400     # default: 400
+    lineHeight: 1.5     # default: 1.5
+    textAlign: left     # default: left
+```
+
+<Note>
+These settings affect the **base** body font only. Headings, the hero name (`h1`/`h2`), and other elements have their own sizes set in the theme's component CSS files using `clamp()` for fluid responsiveness.
+</Note>
+
+## Animation
+
+<ParamField path="params.animate" type="boolean" default="true">
+  Enables CSS-based fade animations on the home page. When `true`:
+
+  - The **navbar** fades down from above (`fade-up` keyframe, 0.5 s ease-in) when the page loads
+  - The **hero text block** slides in from the left (`fade-left` keyframe, 1 s ease-out)
+  - The **hero image** fades in from transparent (`fade-in` keyframe, 1 s ease-out)
+
+  Setting this to `false` renders all elements immediately with no entrance transition.
+</ParamField>
+
+```yaml
+params:
+  animate: true
+```
+
+<Tip>
+Animations are driven purely by CSS `@keyframes` — there is no JavaScript dependency. They run once on page load and do not repeat on subsequent scrolls. Scroll-triggered animations for below-the-fold sections (experience, education, etc.) are not included by default.
+</Tip>
+
+## Custom Scripts
+
+<ParamField path="params.customScripts" type="string">
+  A multi-line string of arbitrary HTML (typically `<script>` tags) injected immediately before the closing `</body>` tag on every page. Use this to add analytics snippets, third-party widgets, or any inline JavaScript that must run after the DOM is ready.
+</ParamField>
+
+```yaml
+params:
+  customScripts: |-
+    <script type="text/javascript">
+      console.log("Hello from customScripts!");
+    </script>
+```
+
+<Warning>
+Content in `customScripts` is rendered as raw HTML. Make sure `markup.goldmark.renderer.unsafe` is set to `true` in your `hugo.yaml`, otherwise Hugo may strip or escape the script tags in certain rendering contexts.
+</Warning>
+
+## MathJax
+
+<ParamField path="params.mathjax" type="boolean" default="false">
+  When `true`, the MathJax JavaScript library is loaded on **every page** of the site, enabling rendering of LaTeX-style math expressions in Markdown content.
+</ParamField>
+
+To enable MathJax globally:
+
+```yaml
+params:
+  mathjax: true
+```
+
+To enable it only on a specific post or page, keep `params.mathjax: false` and add the flag to that page's frontmatter instead:
+
+```yaml
+---
+title: "My Math Post"
+mathjax: true
+---
+```
+
+## Bootstrap CDN
+
+<Note>
+`params.useBootstrapCDN` is technically a global param (covered in the Overview), but it has a direct impact on page load performance and is worth understanding alongside font and animation settings.
+
+Set it to `true` to load both Bootstrap CSS and JS from jsDelivr, `"css"` for CSS only, or `"js"` for JS only. Any other value (including the default `false`) serves Bootstrap from your own static files — the safest choice if you want the site to work fully offline or without external dependencies.
+</Note>
+
+```yaml
+params:
+  # true | "css" | "js" | false
+  useBootstrapCDN: false
+```

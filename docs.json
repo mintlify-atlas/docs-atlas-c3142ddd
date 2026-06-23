@@ -1,72 +1,82 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Hugo Profile",
+  "theme": "willow",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#e8249c",
+    "light": "#fc6fc6",
+    "dark": "#e8249c"
   },
-  "favicon": "/favicon.svg",
-  "navigation": {
-    "pages": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
+  "favicon": "https://media.brand.dev/bda85d0c-37b4-42ca-9e6f-eb8378d72876.png",
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "https://media.brand.dev/311f9fec-b435-4ad6-a1f1-18ddd9447e97.svg",
+    "dark": "https://media.brand.dev/311f9fec-b435-4ad6-a1f1-18ddd9447e97.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
     "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "type": "github",
+      "href": "https://github.com/gurusabarish/hugo-profile"
     }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/gurusabarish/hugo-profile"
     }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "installation"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/overview",
+              "configuration/navbar",
+              "configuration/color-theming",
+              "configuration/fonts-and-animation"
+            ]
+          },
+          {
+            "group": "Sections",
+            "pages": [
+              "sections/hero",
+              "sections/about",
+              "sections/experience",
+              "sections/education",
+              "sections/projects",
+              "sections/achievements",
+              "sections/contact",
+              "sections/gallery"
+            ]
+          },
+          {
+            "group": "Content & Features",
+            "pages": [
+              "features/blog",
+              "features/search",
+              "features/i18n",
+              "features/seo-analytics"
+            ]
+          },
+          {
+            "group": "Deployment",
+            "pages": [
+              "deployment/netlify",
+              "deployment/github-pages",
+              "deployment/troubleshooting"
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

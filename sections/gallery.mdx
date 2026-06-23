@@ -1,0 +1,94 @@
+---
+title: "Image Gallery Page in Hugo Profile"
+sidebarTitle: "Gallery"
+description: "Create an image gallery page in Hugo Profile with lightbox viewer support using viewer.js. Configure images via front matter in a gallery.md file."
+---
+
+Hugo Profile includes a standalone gallery page type powered by [viewer.js](https://github.com/fengyuanchen/viewerjs) for lightbox image browsing. Clicking any image opens a full-screen overlay with zoom, rotation, and navigation controls. Unlike the homepage sections, the gallery is not a `params` entry in `hugo.yaml` — it is a **dedicated content page** defined by a `gallery.md` file in your `content/` directory.
+
+## Creating the Gallery Page
+
+Create the file `content/gallery.md` with `layout: "gallery"` in its front matter. Hugo Profile's `gallery.html` layout template handles the rest.
+
+### Front Matter Fields
+
+<ParamField path="title" type="string" required>
+  The page title displayed as the large heading at the top of the gallery page.
+</ParamField>
+
+<ParamField path="description" type="string">
+  A subtitle shown below the title. Supports emoji shortcodes (e.g., `:camera:`).
+</ParamField>
+
+<ParamField path="viewer" type="boolean" default="true">
+  Enables the viewer.js lightbox. When set to `false`, images are displayed as a plain grid with no click-to-expand behaviour, and the viewer.js assets are not loaded.
+</ParamField>
+
+<ParamField path="viewerOptions" type="object">
+  An optional JavaScript options object passed directly to the viewer.js constructor. Use this to customise lightbox behaviour such as hiding the title bar, changing the toolbar, or setting transition animations. See the [viewer.js options reference](https://github.com/fengyuanchen/viewerjs?tab=readme-ov-file#options) for all available keys.
+</ParamField>
+
+<ParamField path="galleryImages" type="object[]">
+  The list of images to display. Each entry requires a single `src` field containing the image URL or site-relative path.
+</ParamField>
+
+### Example `gallery.md`
+
+```yaml
+---
+title: "Photo Gallery"
+description: "My photo collection 🎉"
+layout: "gallery"
+viewer: true
+viewerOptions:
+  title: false
+  # Add more viewer.js options here
+galleryImages:
+  - src: /images/gallery/photo1.jpg
+  - src: /images/gallery/photo2.jpg
+  - src: /images/gallery/photo3.jpg
+---
+```
+
+## Adding Gallery to the Navigation Menu
+
+To make the gallery accessible from the top navigation bar, add a `menu.main` entry to your `hugo.yaml`:
+
+```yaml
+Menus:
+  main:
+    - identifier: gallery
+      name: Gallery
+      title: Gallery
+      url: /gallery
+      weight: 2
+```
+
+<Note>
+  The `weight` value controls the order of menu items. Lower numbers appear first. Adjust it alongside your other menu entries (e.g., Blog) to control placement.
+</Note>
+
+## viewer.js Options
+
+The `viewerOptions` front matter field accepts any configuration object supported by viewer.js and is spread directly into the constructor call. For example, to disable the image title overlay and enable inline mode:
+
+```yaml
+viewerOptions:
+  title: false
+  inline: false
+  toolbar: true
+```
+
+Refer to the full [viewer.js documentation](https://github.com/fengyuanchen/viewerjs?tab=readme-ov-file#options) for all available options.
+
+## Cloudinary Integration
+
+If `cloudinary_cloud_name` is set in `params`, Hugo Profile can serve responsive, CDN-hosted images using the `dynamic-img` shortcode. Add the shortcode calls in the **body** of your `gallery.md` (below the front matter delimiter) instead of using `galleryImages`:
+
+```
+{{</* dynamic-img src="/image/path.jpg" title="My Image" width="w_800" */>}}
+```
+
+<Info>
+  The `dynamic-img` shortcode requires your images to be uploaded and hosted on Cloudinary. Set `params.cloudinary_cloud_name` to your Cloudinary cloud name in `hugo.yaml` to activate this feature.
+</Info>

@@ -1,0 +1,140 @@
+---
+title: "Blog System in Hugo Profile"
+sidebarTitle: "Blog"
+description: "Hugo Profile includes a full blog with list and single post views, reading time, scroll progress bar, tags, social sharing, and recent posts in the footer."
+---
+
+Hugo Profile includes a fully featured blog section at `content/blogs/` with both list and single-post views. Posts support featured images, tags, a table of contents, math rendering, and an enhanced reading experience powered by scroll progress and reading time indicators.
+
+## Creating a New Post
+
+Run the following command to scaffold a new blog post with pre-populated frontmatter:
+
+```bash
+hugo new content content/blogs/my-post.md
+```
+
+Hugo's archetype system automatically adds the standard frontmatter fields for you, so you can start writing content right away.
+
+## Blog Post Frontmatter
+
+Each post in `content/blogs/` uses the following frontmatter fields:
+
+| Field         | Type    | Description                                              |
+|---------------|---------|----------------------------------------------------------|
+| `title`       | string  | The post title displayed at the top of the page         |
+| `date`        | string  | Publication date in ISO 8601 format                     |
+| `draft`       | boolean | Set to `true` to exclude from builds                    |
+| `author`      | string  | Author name displayed below the title                   |
+| `image`       | string  | Path to the featured image (e.g., `/images/post.jpg`)   |
+| `description` | string  | Short summary used in meta tags and post cards          |
+| `tags`        | array   | List of tag strings for categorization                  |
+| `toc`         | boolean | Set to `true` to show the table of contents sidebar     |
+| `mathjax`     | boolean | Set to `true` to enable MathJax on this post            |
+
+Here is a complete example frontmatter block:
+
+```markdown
+---
+title: "My First Post"
+date: 2024-01-15T10:00:00+00:00
+draft: false
+author: "Jane Doe"
+image: /images/posts/my-first-post.jpg
+description: "A short summary of what this post covers."
+tags:
+  - Hugo
+  - Tutorial
+  - Web
+toc: true
+mathjax: false
+---
+```
+
+## Blog Features
+
+<CardGroup cols={2}>
+  <Card title="Reading Time" icon="clock">
+    Automatically calculated from word count and displayed at the top of each post. Powered by `readingTime.js`, which reads the article text and estimates at 225 words per minute. Controlled via `params.singlePages.readTime.enable`.
+  </Card>
+  <Card title="Scroll Progress Bar" icon="bars-progress">
+    A thin progress bar at the top of the viewport tracks how far the reader has scrolled through the post. Enable or disable it with `params.singlePages.scrollprogress.enable`.
+  </Card>
+  <Card title="Social Share" icon="share-nodes">
+    Share buttons for LinkedIn, Twitter/X, WhatsApp, and email appear in the sidebar of every post. Toggle them globally with `params.singlePages.socialShare: true`.
+  </Card>
+  <Card title="Tags" icon="tags">
+    Tag links are shown in the post sidebar. Set `params.singlePages.tags.openInNewTab: true` to open tag archive pages in a new browser tab.
+  </Card>
+  <Card title="Table of Contents" icon="list">
+    A sticky table of contents is rendered from the post's headings and shown in the right sidebar. Enable it per-post by adding `toc: true` to the frontmatter.
+  </Card>
+  <Card title="Disqus Comments" icon="comments">
+    Comment threads appear below each post when a Disqus shortname is configured under `services.disqus.shortname` in `hugo.yaml`.
+  </Card>
+</CardGroup>
+
+## Configuring Reading Experience
+
+The single-page experience is controlled under `params.singlePages` in `hugo.yaml`:
+
+```yaml
+params:
+  singlePages:
+    socialShare: true
+    readTime:
+      enable: true
+      content: "min read"
+    scrollprogress:
+      enable: true
+    tags:
+      openInNewTab: true
+```
+
+## Footer Recent Posts
+
+Hugo Profile can show a list of recent posts in the site footer. Configure this under `params.footer.recentPosts`:
+
+```yaml
+params:
+  footer:
+    recentPosts:
+      path: "blogs"               # Content directory to pull posts from
+      count: 3                    # Number of recent posts to display
+      title: Recent Posts         # Section heading label
+      enable: true                # Show or hide the recent posts section
+      disableFeaturedImage: false # Set true to hide thumbnails in the footer
+```
+
+## Blog List Page
+
+The blog list page (`/blogs`) displays posts in a paginated grid. Control the number of posts per page with the top-level `pagination` setting:
+
+```yaml
+pagination:
+  pagerSize: 3
+```
+
+To hide featured images on the list page cards, set:
+
+```yaml
+params:
+  listPages:
+    disableFeaturedImage: false
+```
+
+## Date Formatting
+
+Hugo Profile uses Go time format strings to control how dates are rendered in different contexts. All three are set under `params.datesFormat`:
+
+```yaml
+params:
+  datesFormat:
+    article: "Jan 2, 2006"         # Date on single post pages
+    articleList: "Jan 2, 2006"     # Date on the blog list page
+    articleRecent: "Jan 2, 2006"   # Date in the footer recent posts
+```
+
+<Tip>
+  Go's reference time is `Mon Jan 2 15:04:05 MST 2006`. Use this as your template when writing custom date formats — for example, `"January 2, 2006"` for a fully written-out date.
+</Tip>

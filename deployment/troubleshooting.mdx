@@ -1,0 +1,159 @@
+---
+title: "Troubleshooting Hugo Profile Issues"
+sidebarTitle: "Troubleshooting"
+description: "Fix common Hugo Profile errors including TLS timeouts, missing images, blank sections, and Hugo version compatibility issues."
+---
+
+This page covers the most common issues encountered when setting up and deploying Hugo Profile, from build-time errors to sections that silently refuse to render. Work through the accordion that matches your symptom — each entry explains what causes the problem and the exact steps to fix it.
+
+## Common issues
+
+<Accordion title="TLS handshake timeout error during build">
+  You will see an error that looks like this:
+
+  ```
+  ERROR error calling resources.GetRemote: Get "https://publish.twitter.com/oembed?...": net/http: TLS handshake timeout
+  Error: error building site: logged 1 error(s)
+  ```
+
+  This happens because Hugo tries to fetch a Twitter oEmbed when it processes the `{{</* tweet */>}}` shortcode, and the outbound network request times out. This shortcode appears only in the example content that ships with the theme — it is not part of your personal content.
+
+  **Fix:** Open `content/blogs/rich-content.md` and delete (or comment out) the line containing the tweet shortcode:
+
+  ```
+  {{</* tweet user="GoHugoIO" id="1315233626070503424" */>}}
+  ```
+
+  Save the file and rebuild. The timeout error will not recur once the shortcode is removed.
+</Accordion>
+
+<Accordion title="Site looks incomplete — missing images or blank sections">
+  When you first run `hugo server` after the Quick Start setup, the site may render with broken image placeholders and the Blog or Gallery sections may not appear at all.
+
+  This is expected. Images and example pages live inside `themes/hugo-profile/exampleSite/static/` and `themes/hugo-profile/exampleSite/content/` respectively. Hugo looks for static assets and content in the **root-level** `static/` and `content/` directories — not inside the theme folder.
+
+  **Fix:** Copy the example content into your site root:
+
+  ```bash
+  rsync -av themes/hugo-profile/exampleSite/static/ ./static/
+  rsync -av themes/hugo-profile/exampleSite/content/ ./content/
+  ```
+
+  Run `hugo server` again and the site will render completely. You can then replace or edit this content with your own.
+</Accordion>
+
+<Accordion title="Hugo Profile sections not showing up">
+  If a section like About, Experience, Education, or Projects is missing from the rendered page, the most likely cause is that its `enable` flag is not set to `true` in `hugo.yaml`.
+
+  Every section in Hugo Profile defaults to hidden. You must explicitly opt each one in:
+
+  ```yaml
+  params:
+    hero:
+      enable: true
+    about:
+      enable: true
+    experience:
+      enable: true
+    education:
+      enable: true
+    achievements:
+      enable: true
+    projects:
+      enable: true
+    contact:
+      enable: true
+  ```
+
+  After saving `hugo.yaml`, the sections will appear on the next build or live-reload cycle.
+</Accordion>
+
+<Accordion title="Hugo version too old">
+  Hugo Profile requires **Hugo 0.87.0 or higher**. Using an older version can produce silent rendering failures, missing template features, or a build that exits with an error about unrecognized configuration keys.
+
+  Check your currently installed version:
+
+  ```bash
+  hugo version
+  ```
+
+  If it is below 0.87.0, download the latest release from the [Hugo installation guide](https://gohugo.io/installation/). On macOS with Homebrew:
+
+  ```bash
+  brew upgrade hugo
+  ```
+</Accordion>
+
+<Accordion title="Theme not found error">
+  A build error like `theme not found: hugo-profile` means Hugo cannot locate the theme files.
+
+  Check two things:
+
+  1. **Your `hugo.yaml` declares the theme.** The file must contain:
+
+     ```yaml
+     theme: hugo-profile
+     ```
+
+  2. **The theme files exist on disk.** Confirm that `themes/hugo-profile/` is present and non-empty:
+
+     ```bash
+     ls themes/hugo-profile/
+     ```
+
+  If the directory is empty or missing and you added the theme as a Git submodule, the submodule was likely not initialized. Run:
+
+  ```bash
+  git submodule update --init --recursive
+  ```
+
+  This fetches the submodule content at the pinned commit. If you cloned the repository with `git clone`, add `--recurse-submodules` next time to avoid this step.
+</Accordion>
+
+<Accordion title="Search not working">
+  Hugo Profile's search feature relies on a JSON index that Hugo generates at build time. If search returns no results or produces a console error about a missing JSON file, the JSON output format is probably not configured.
+
+  Open `hugo.yaml` and verify that the `outputs` block includes `"JSON"` for the home page:
+
+  ```yaml
+  outputs:
+    home:
+      - "HTML"
+      - "RSS"
+      - "JSON"
+    page:
+      - "HTML"
+      - "RSS"
+  ```
+
+  Without the `JSON` output, Hugo skips generating the search index file and the search widget has nothing to query. Save the file and rebuild to generate the index.
+</Accordion>
+
+<Accordion title="Colors or custom theme not applied">
+  If you set custom colors in `hugo.yaml` and they are not reflected in the browser, the most common cause is unquoted hex values in YAML.
+
+  YAML treats the `#` character as the start of a comment, so an unquoted hex value like `primaryColor: #007bff` is silently discarded — Hugo never sees the value. Always wrap hex codes in double quotes:
+
+  ```yaml
+  params:
+    color:
+      primaryColor: "#007bff"
+      textColor: "#343a40"
+      backgroundColor: "#eaedf0"
+      secondaryBackgroundColor: "#64ffda1a"
+
+      darkmode:
+        primaryColor: "#ffffff"
+        backgroundColor: "#18191a"
+  ```
+
+  After quoting all hex values, rebuild the site. The colors should apply immediately.
+</Accordion>
+
+## Getting help
+
+If your issue is not listed above, these resources can help:
+
+- **File a GitHub issue:** [https://github.com/gurusabarish/hugo-profile/issues](https://github.com/gurusabarish/hugo-profile/issues) — include your Hugo version, a description of the problem, and any error output.
+- **Check the wiki:** [https://github.com/gurusabarish/hugo-profile/wiki](https://github.com/gurusabarish/hugo-profile/wiki) — covers theme-specific tips such as color customization and configuration options.
+- **Live demo for reference:** [https://hugo-profile.netlify.app](https://hugo-profile.netlify.app) — compare your local output against the canonical example site to spot configuration differences.

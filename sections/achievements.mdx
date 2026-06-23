@@ -1,0 +1,70 @@
+---
+title: "Configure the Achievements Section in Hugo Profile"
+sidebarTitle: "Achievements"
+description: "Highlight awards, hackathons, and accomplishments in Hugo Profile using the params.achievements section with titles, descriptions, and images."
+---
+
+The Achievements section displays a responsive grid of cards that highlight notable accomplishments — hackathon wins, open source milestones, competitive programming results, or any recognition worth showcasing. Items can optionally include an image and a link, and cards without an image render as clean text-only tiles. The section is configured under `params.achievements` in your `hugo.yaml`.
+
+## Enable the Section
+
+<ParamField path="params.achievements.enable" type="boolean" default="false">
+  Set to `true` to display the Achievements section on the homepage.
+</ParamField>
+
+<ParamField path="params.achievements.title" type="string">
+  Optional custom heading for the section. Defaults to the built-in i18n string `"Achievements"` when omitted.
+</ParamField>
+
+## Achievement Item Fields
+
+Add each achievement as an entry under `params.achievements.items`. The following fields are available per item:
+
+<ParamField path="title" type="string" required>
+  The name of the achievement, rendered as the card heading.
+</ParamField>
+
+<ParamField path="content" type="string">
+  A short description of the achievement shown inside the card body.
+</ParamField>
+
+<ParamField path="url" type="string">
+  An optional link for the card. When provided, the entire card becomes a clickable anchor that opens the URL in a new tab.
+</ParamField>
+
+<ParamField path="image" type="string">
+  Optional path to an image displayed at the top of the card (e.g., `/images/achievement.jpg`). If omitted, the card renders as text-only.
+</ParamField>
+
+<Note>
+  Items without an `image` value render as text-only cards. This is intentional — not every achievement needs a visual, and text-only cards blend seamlessly with image cards in the same grid.
+</Note>
+
+## Example Configuration
+
+The following example adds three achievements to the section, drawn from the theme's example site:
+
+```yaml
+params:
+  achievements:
+    enable: true
+    # title: "Highlights"   # uncomment to override the default heading
+    items:
+      - title: Google Kickstart Runner
+        content: I solved all problems with optimal solution.
+        url: https://example.com
+        image: /images/achievement.jpg
+
+      - title: Facebook Hackathon Winner
+        content: Developed a product using Artificial Intelligence.
+        image: /images/achievement.jpg
+
+      - title: Hugo Profile
+        content: Developed a theme and getting 1K+ downloads per month.
+        url: "https://github.com/gurusabarish/hugo-profile"
+        image: /images/achievement.jpg
+```
+
+<Tip>
+  You can mix items with and without images in the same list. Cards with a `url` become fully clickable links, which is useful for linking to contest result pages, certificates, or project repositories.
+</Tip>

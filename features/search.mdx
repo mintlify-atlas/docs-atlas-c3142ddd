@@ -1,0 +1,93 @@
+---
+title: "Full-Text Search in Hugo Profile"
+sidebarTitle: "Search"
+description: "Hugo Profile's built-in search uses a JSON index to provide instant full-text search across blog posts and pages without any external service."
+---
+
+Hugo Profile includes client-side full-text search powered by a JSON index generated at build time. No external search service or API key is required — the search index is built by Hugo and queried entirely in the browser using `search.js`.
+
+## How It Works
+
+When Hugo builds your site, it generates an `index.json` file at the site root by iterating over all regular content pages. The `search.js` script fetches this file on demand and filters results by matching the user's query against each page's title, description, and content fields. Results appear as a dropdown overlay anchored below the search input in the navbar.
+
+The search is debounced with a 300 ms delay so the index is only queried after the user pauses typing, keeping performance smooth even on larger sites.
+
+## Enabling and Disabling Search
+
+Search is **enabled by default**. To disable it, set `params.navbar.disableSearch` to `true` in your `hugo.yaml`:
+
+```yaml
+params:
+  navbar:
+    disableSearch: false   # Set to true to remove the search box entirely
+```
+
+The search input is visible in the navbar on desktop viewports. On mobile it is hidden in the collapsed navbar by default.
+
+### Customizing the Placeholder Text
+
+Override the default `"Search..."` placeholder with `params.navbar.searchPlaceholder`. If this param is not set, the theme falls back to the i18n string `search_placeholder`:
+
+```yaml
+params:
+  navbar:
+    searchPlaceholder: "Search posts..."
+```
+
+## Required Output Configuration
+
+For search to work, Hugo must generate the JSON index at build time. Ensure your `hugo.yaml` includes `"JSON"` in the `outputs.home` list:
+
+```yaml
+outputs:
+  home:
+    - "HTML"
+    - "RSS"
+    - "JSON"
+  page:
+    - "HTML"
+    - "RSS"
+```
+
+<Warning>
+  If `"JSON"` is missing from `outputs.home`, Hugo will not generate `index.json` and the search feature will fail silently — the search box will appear but return no results.
+</Warning>
+
+## Search Index Format
+
+The `index.json` template (`layouts/_default/index.json`) iterates over all pages recursively and serializes each one as a JSON object:
+
+```yaml
+# Each entry in index.json contains:
+# - title       — the page title
+# - description — the page description param
+# - content     — full rendered HTML content
+# - image       — the featured image param
+# - permalink   — absolute URL to the page
+```
+
+The raw template that produces this output is:
+
+```
+{{- $.Scratch.Add "index" slice -}}
+{{- range .RegularPagesRecursive -}}
+    {{- $.Scratch.Add "index" (dict "title" .Title "description" .Params.description
+        "content" .Content "image" .Params.image "permalink" .Permalink) -}}
+{{- end -}}
+{{- $.Scratch.Get "index" | jsonify -}}
+```
+
+## Search Behaviour
+
+- **Scope** — all pages under `content/` are indexed, including blog posts, gallery entries, and any other regular content.
+- **Drafts** — pages marked `draft: true` are excluded from Hugo builds and therefore never appear in `index.json`.
+- **Matching** — the query is matched case-insensitively against `title`, `description`, and `content`. A page is included in results if any of those fields contain the query string.
+- **Results UI** — matching results are shown as a dropdown card list below the search box. Each card links to the matching page and shows its title and description.
+
+<Tip>
+  Keep `description` frontmatter filled in on your blog posts. The search results dropdown displays the description as a summary, giving readers better context before they click through.
+</Tip>
+
+<Note>
+  The search index is fetched once per search session and cached in memory for subsequent queries on the same page load. Navigating to a new page resets the cache.
+</Note>

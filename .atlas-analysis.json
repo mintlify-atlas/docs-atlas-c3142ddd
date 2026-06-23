@@ -1,0 +1,105 @@
+{
+  "projectType": "frontend",
+  "projectName": "Hugo Profile",
+  "projectDescription": "A highly customizable, mobile-first Hugo theme for personal portfolios and blogs, featuring sections for hero, about, experience, education, projects, achievements, contact, gallery, and built-in i18n support.",
+  "theme": "willow",
+  "primaryColor": "#e8249c",
+  "lightColor": "#fc6fc6",
+  "darkColor": null,
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "installation"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/overview",
+              "configuration/navbar",
+              "configuration/color-theming",
+              "configuration/fonts-and-animation"
+            ]
+          },
+          {
+            "group": "Sections",
+            "pages": [
+              "sections/hero",
+              "sections/about",
+              "sections/experience",
+              "sections/education",
+              "sections/projects",
+              "sections/achievements",
+              "sections/contact",
+              "sections/gallery"
+            ]
+          },
+          {
+            "group": "Content & Features",
+            "pages": [
+              "features/blog",
+              "features/search",
+              "features/i18n",
+              "features/seo-analytics"
+            ]
+          },
+          {
+            "group": "Deployment",
+            "pages": [
+              "deployment/netlify",
+              "deployment/github-pages",
+              "deployment/troubleshooting"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Mobile-first, fully responsive single-page portfolio layout",
+    "Configurable sections: Hero, About, Experience, Education, Projects, Achievements, Contact",
+    "Built-in light/dark/auto theme toggle",
+    "Internationalization (i18n) with English, Spanish, and French built in",
+    "Integrated blog with reading time, scroll progress bar, tags, and social share",
+    "Image gallery with viewer.js lightbox support",
+    "Contact form integration via FormSpree",
+    "Google Analytics and Disqus comment support",
+    "Full-text search via JSON index",
+    "Cloudinary dynamic image integration",
+    "MathJax support for math rendering",
+    "Font Awesome 6 icon support throughout"
+  ],
+  "publicApiSurface": [
+    "params.hero (enable, intro, title, subtitle, content, image, button, socialLinks, bottomImage, roundImage)",
+    "params.about (enable, title, image, content, skills)",
+    "params.experience (enable, title, items[])",
+    "params.education (enable, title, index, items[])",
+    "params.projects (enable, title, items[])",
+    "params.achievements (enable, title, items[])",
+    "params.contact (enable, title, content, btnName, btnLink, email, formspree)",
+    "params.navbar (align, brandLogo, brandName, disableSearch, stickyNavBar, enableSeparator, menus)",
+    "params.theme (disableThemeToggle, defaultTheme)",
+    "params.color (textColor, secondaryTextColor, primaryColor, backgroundColor, secondaryBackgroundColor, darkmode.*)",
+    "params.font (fontSize, fontWeight, lineHeight, textAlign)",
+    "params.footer (recentPosts, socialNetworks)",
+    "params.singlePages (socialShare, readTime, scrollprogress, tags)",
+    "params.listPages (disableFeaturedImage)",
+    "params.datesFormat (article, articleList, articleRecent)",
+    "params.terms (read, toc, copyright, emailText, pageNotFound)",
+    "params.animate (boolean)",
+    "params.mathjax (boolean)",
+    "params.useBootstrapCDN (boolean)",
+    "params.cloudinary_cloud_name (string)",
+    "params.staticPath (string)",
+    "shortcode: dynamic-img (src, title, width, style)",
+    "i18n keys: nav_about, nav_experience, nav_education, nav_projects, nav_achievements, nav_contact, search_placeholder, about, experience, education, projects, achievements, contact, recent_posts, read, toc, tags, social, copyright, email_text, page_not_found, min_read",
+    "menu.main entries (identifier, name, title, url, weight, parent)"
+  ]
+}

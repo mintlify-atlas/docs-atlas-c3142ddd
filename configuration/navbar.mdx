@@ -1,0 +1,164 @@
+---
+title: "Navbar Configuration in Hugo Profile"
+sidebarTitle: "Navbar"
+description: "Configure the Hugo Profile navigation bar: brand logo, alignment, sticky behavior, search, and per-section menu visibility."
+---
+
+The navigation bar is configured entirely under `params.navbar` in your `hugo.yaml`. It controls the brand logo, link alignment, sticky scroll behavior, the search bar, and which portfolio sections appear as nav links. Custom menu items (blogs, galleries, dropdowns) are registered separately via Hugo's `Menus.main` mechanism.
+
+## `params.navbar` Fields
+
+<ParamField path="params.navbar.align" type="string" default="ms-auto">
+  Controls the horizontal alignment of navbar links using Bootstrap utility classes:
+
+  - `"ms-auto"` — links align to the **right** (margin-start auto pushes content right)
+  - `"mx-auto"` — links are **centered**
+  - `"me-auto"` — links align to the **left**
+</ParamField>
+
+<ParamField path="params.navbar.brandLogo" type="string">
+  Path to the image used as the navbar brand logo, e.g. `"/logo.png"`. Defaults to `params.favicon` when not set. The image is rendered at 30×30 px.
+</ParamField>
+
+<ParamField path="params.navbar.showBrandLogo" type="boolean" default="true">
+  Whether to show the brand logo image next to the brand name. Set to `false` to display the brand name text only.
+</ParamField>
+
+<ParamField path="params.navbar.brandName" type="string">
+  Text displayed as the navbar brand. Defaults to the top-level `params.title` (and ultimately the top-level `title`) when not set.
+</ParamField>
+
+<ParamField path="params.navbar.disableSearch" type="boolean" default="false">
+  Set to `true` to hide the search input from the navbar entirely. Requires `outputs.home` to include `"JSON"` for search to function.
+</ParamField>
+
+<ParamField path="params.navbar.searchPlaceholder" type="string" default="Search...">
+  Placeholder text shown inside the search input box.
+</ParamField>
+
+<ParamField path="params.navbar.stickyNavBar.enable" type="boolean" default="false">
+  When `true`, the navbar becomes fixed at the top of the viewport and hides/shows based on scroll position.
+</ParamField>
+
+<ParamField path="params.navbar.stickyNavBar.showOnScrollUp" type="boolean" default="false">
+  Only meaningful when `stickyNavBar.enable` is `true`. When `true`, the navbar reappears as soon as the user scrolls upward. When `false`, the navbar only shows again when the page is scrolled back to the very top.
+</ParamField>
+
+<ParamField path="params.navbar.enableSeparator" type="boolean" default="false">
+  When `true`, a visual separator line is rendered between the built-in section links and the custom `Menus.main` entries. Only visible on large (`lg`) screens and above.
+</ParamField>
+
+### Section Menu Visibility
+
+Each built-in portfolio section can be individually hidden from the navbar. A section link is only rendered when both its `enable: true` flag **and** the corresponding `disableX: false` flag are in effect.
+
+<ParamField path="params.navbar.menus.disableAbout" type="boolean" default="false">
+  Hide the **About** link from the navbar.
+</ParamField>
+
+<ParamField path="params.navbar.menus.disableExperience" type="boolean" default="false">
+  Hide the **Experience** link from the navbar.
+</ParamField>
+
+<ParamField path="params.navbar.menus.disableEducation" type="boolean" default="false">
+  Hide the **Education** link from the navbar.
+</ParamField>
+
+<ParamField path="params.navbar.menus.disableProjects" type="boolean" default="false">
+  Hide the **Projects** link from the navbar.
+</ParamField>
+
+<ParamField path="params.navbar.menus.disableAchievements" type="boolean" default="false">
+  Hide the **Achievements** link from the navbar.
+</ParamField>
+
+<ParamField path="params.navbar.menus.disableContact" type="boolean" default="false">
+  Hide the **Contact** link from the navbar.
+</ParamField>
+
+## Complete `params.navbar` Example
+
+```yaml
+params:
+  navbar:
+    align: ms-auto          # ms-auto (right) | mx-auto (center) | me-auto (left)
+    brandLogo: "/logo.png"  # defaults to params.favicon
+    showBrandLogo: true
+    brandName: "Jane Doe"   # defaults to params.title
+    disableSearch: false
+    searchPlaceholder: "Search..."
+    stickyNavBar:
+      enable: true
+      showOnScrollUp: true
+    enableSeparator: false
+    menus:
+      disableAbout: false
+      disableExperience: false
+      disableEducation: false
+      disableProjects: false
+      disableAchievements: false
+      disableContact: false
+```
+
+## Custom Menu Entries
+
+In addition to the auto-generated section links, you can add arbitrary pages to the navbar using Hugo's standard `Menus.main` (top-level) or `menu.main` (per-language) configuration. Each entry supports the following fields:
+
+| Field | Description |
+|-------|-------------|
+| `identifier` | Unique ID for this menu entry (also used as the `parent` for dropdown children) |
+| `name` | Display text rendered in the navbar |
+| `title` | HTML `title` attribute on the link (tooltip on hover) |
+| `url` | Target URL for the link |
+| `weight` | Sort order — lower numbers appear first |
+| `parent` | Set to another entry's `identifier` to nest this item as a dropdown child |
+
+### Flat Menu Entries
+
+```yaml
+Menus:
+  main:
+    - identifier: blog
+      name: Blog
+      title: Blog posts
+      url: /blogs
+      weight: 1
+    - identifier: gallery
+      name: Gallery
+      title: Image gallery
+      url: /gallery
+      weight: 2
+```
+
+### Dropdown Menu
+
+Create a parent entry with no `url` (or `url: /#`), then add child entries that reference the parent's `identifier`:
+
+```yaml
+Menus:
+  main:
+    - identifier: dropdown
+      title: More pages
+      name: More
+      weight: 3
+    - identifier: dropdown-uses
+      title: My uses page
+      name: Uses
+      url: /uses
+      parent: dropdown
+      weight: 1
+    - identifier: dropdown-now
+      title: What I'm doing now
+      name: Now
+      url: /now
+      parent: dropdown
+      weight: 2
+```
+
+<Tip>
+For multilingual sites, define `menu.main` entries inside each `languages.<code>` block rather than at the top level so each language gets its own localized labels and URLs.
+</Tip>
+
+<Note>
+The `enableSeparator` option only inserts a visible divider on large screens (`lg` breakpoint and above). On mobile the separator is hidden because the navbar collapses into a hamburger menu.
+</Note>

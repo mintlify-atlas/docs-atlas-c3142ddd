@@ -1,0 +1,157 @@
+---
+title: "Color Theming and Dark Mode in Hugo Profile"
+sidebarTitle: "Color Theming"
+description: "Customize Hugo Profile's colors for light and dark mode. Configure primary, background, text, and link colors via params.color in hugo.yaml."
+---
+
+Hugo Profile ships with full color customization and a built-in light/dark/auto theme toggle in the navbar. You can define distinct palettes for both light and dark mode through the `params.color` block in `hugo.yaml` — no CSS editing required. All color values are written directly into CSS custom properties at build time, which means every component in the theme automatically inherits your choices.
+
+## Theme Toggle
+
+The theme toggle button (sun/moon icon) is displayed in the navbar by default. Two params control it:
+
+<ParamField path="params.theme.disableThemeToggle" type="boolean" default="false">
+  Set to `true` to completely remove the light/dark toggle button from the navbar. Users will be locked to whichever mode is selected via `defaultTheme`.
+</ParamField>
+
+<ParamField path="params.theme.defaultTheme" type="string">
+  The color mode applied on first visit (before the user makes a choice). Accepted values:
+
+  - `"light"` — always start in light mode
+  - `"dark"` — always start in dark mode
+  - *(omit the key)* — **auto mode**: reads the visitor's OS-level `prefers-color-scheme` preference and applies it automatically
+
+  The user's manual choice is stored in `localStorage` under the key `pref-theme` and respected on subsequent visits.
+</ParamField>
+
+```yaml
+params:
+  theme:
+    disableThemeToggle: false
+    defaultTheme: "light" # "light" | "dark" | omit for auto
+```
+
+## Color Variables
+
+All color values live under `params.color`. Light mode colors are set directly on `params.color`; dark mode overrides go under `params.color.darkmode`. Both sets use identical field names.
+
+<Warning>
+Hex color values that start with `#` **must** be wrapped in YAML quotation marks, e.g. `"#007bff"`. Without quotes the `#` character begins a YAML comment and the value is silently dropped.
+</Warning>
+
+### Light Mode
+
+<ParamField path="params.color.textColor" type="string" default="#343a40">
+  Primary body text color.
+</ParamField>
+
+<ParamField path="params.color.secondaryTextColor" type="string" default="#6c757d">
+  Muted / secondary text color used for subtitles, section headings, card metadata, and similar de-emphasized copy.
+</ParamField>
+
+<ParamField path="params.color.textLinkColor" type="string" default="#007bff">
+  Color of hyperlinks in body content. Defaults to `primaryColor` when not explicitly set.
+</ParamField>
+
+<ParamField path="params.color.backgroundColor" type="string" default="#eaedf0">
+  Main page background color applied to `<html>` and most page-level surfaces.
+</ParamField>
+
+<ParamField path="params.color.secondaryBackgroundColor" type="string" default="#64ffda1a">
+  Accent background used for cards, experience containers, and other elevated surfaces. The default is a semi-transparent teal tint.
+</ParamField>
+
+<ParamField path="params.color.primaryColor" type="string" default="#007bff">
+  Brand accent color — used for buttons, borders, active tab indicators, list markers, and hero headings.
+</ParamField>
+
+<ParamField path="params.color.secondaryColor" type="string" default="#f8f9fa">
+  Secondary surface color for cards, hero image borders, and other contained elements.
+</ParamField>
+
+### Dark Mode
+
+All fields under `params.color.darkmode` mirror the light mode fields exactly. They are applied whenever the `dark` class is present on `<body>`.
+
+<ParamField path="params.color.darkmode.textColor" type="string" default="#e4e6eb">
+  Primary text color in dark mode.
+</ParamField>
+
+<ParamField path="params.color.darkmode.secondaryTextColor" type="string" default="#b0b3b8">
+  Secondary / muted text color in dark mode.
+</ParamField>
+
+<ParamField path="params.color.darkmode.textLinkColor" type="string" default="#ffffff">
+  Hyperlink color in dark mode. Defaults to `darkmode.primaryColor` when not explicitly set.
+</ParamField>
+
+<ParamField path="params.color.darkmode.backgroundColor" type="string" default="#18191a">
+  Main background color in dark mode.
+</ParamField>
+
+<ParamField path="params.color.darkmode.secondaryBackgroundColor" type="string" default="#212529">
+  Secondary surface / card background color in dark mode.
+</ParamField>
+
+<ParamField path="params.color.darkmode.primaryColor" type="string" default="#ffffff">
+  Brand accent color in dark mode.
+</ParamField>
+
+<ParamField path="params.color.darkmode.secondaryColor" type="string" default="#212529">
+  Secondary surface color in dark mode.
+</ParamField>
+
+## Full `params.color` Example
+
+```yaml
+params:
+  color:
+    # Light mode
+    textColor: "#343a40"
+    secondaryTextColor: "#6c757d"
+    textLinkColor: "#007bff"
+    backgroundColor: "#eaedf0"
+    secondaryBackgroundColor: "#64ffda1a"
+    primaryColor: "#007bff"
+    secondaryColor: "#f8f9fa"
+
+    darkmode:
+      textColor: "#e4e6eb"
+      secondaryTextColor: "#b0b3b8"
+      textLinkColor: "#ffffff"
+      backgroundColor: "#18191a"
+      secondaryBackgroundColor: "#212529"
+      primaryColor: "#ffffff"
+      secondaryColor: "#212529"
+```
+
+## CSS Variable System
+
+At build time Hugo Profile injects all color values as CSS custom properties on `:root`. The full set of variables is:
+
+```css
+:root {
+  --text-color: ...;
+  --text-secondary-color: ...;
+  --text-link-color: ...;
+  --background-color: ...;
+  --secondary-background-color: ...;
+  --primary-color: ...;
+  --secondary-color: ...;
+
+  /* dark mode variants — swapped in by the .dark class */
+  --text-color-dark: ...;
+  --text-secondary-color-dark: ...;
+  --text-link-color-dark: ...;
+  --background-color-dark: ...;
+  --secondary-background-color-dark: ...;
+  --primary-color-dark: ...;
+  --secondary-color-dark: ...;
+}
+```
+
+Advanced users can override individual properties by adding a `<style>` block via `params.customScripts` or by placing a custom CSS file in `static/css/`.
+
+<Tip>
+If you only set light mode colors and omit the `darkmode` block entirely, Hugo Profile falls back to its built-in dark mode defaults (`#18191a` background, `#e4e6eb` text, etc.). You don't need to define both palettes to get a working dark mode.
+</Tip>

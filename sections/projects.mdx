@@ -1,0 +1,101 @@
+---
+title: "Configure the Projects Section in Hugo Profile"
+sidebarTitle: "Projects"
+description: "Showcase your portfolio projects in Hugo Profile with titles, descriptions, images, featured demo links, badge tags, and social share links."
+---
+
+The Projects section renders a responsive card grid of your work directly on the homepage. Each card displays a screenshot, badge pills for technologies used, a description, an optional featured CTA button, and icon links for sharing or further reading. The entire section is configured under `params.projects` in your `hugo.yaml`.
+
+## Enable the Section
+
+<ParamField path="params.projects.enable" type="boolean" default="false">
+  Set to `true` to display the Projects section on the homepage.
+</ParamField>
+
+<ParamField path="params.projects.title" type="string">
+  Optional custom heading for the section. Defaults to the built-in i18n string `"Projects"` when omitted.
+</ParamField>
+
+## Project Item Fields
+
+Add each project as an entry under `params.projects.items`. The following fields are available per item:
+
+<ParamField path="title" type="string" required>
+  The display name of the project, shown as the card heading.
+</ParamField>
+
+<ParamField path="content" type="string">
+  A short description of the project. Supports Markdown for inline formatting such as bold, links, or code spans.
+</ParamField>
+
+<ParamField path="image" type="string">
+  Path to a screenshot or representative image for the project (e.g., `/images/projects/profile.png`). The image is displayed as the card's top banner.
+</ParamField>
+
+<ParamField path="featured.name" type="string">
+  Label for the featured CTA button rendered in the card footer (e.g., `"Demo"` or `"Live Site"`).
+</ParamField>
+
+<ParamField path="featured.link" type="string">
+  URL the featured CTA button points to. Opens in a new tab.
+</ParamField>
+
+<ParamField path="badges" type="string[]">
+  An array of technology or tag strings rendered as badge pills above the card title (e.g., `["Hugo", "Bootstrap", "JavaScript"]`).
+</ParamField>
+
+<ParamField path="links" type="object[]">
+  An array of additional icon links shown in the card footer alongside the featured button. Each entry requires:
+  - `icon` — a Font Awesome CSS class string (e.g., `fab fa-github`)
+  - `url` — the destination URL; supports `mailto:` links
+</ParamField>
+
+<Tip>
+  Use Font Awesome class names for `links[].icon`. Common examples include `fab fa-github`, `fab fa-twitter`, and `fa fa-envelope`. Browse the full icon set at [fontawesome.com](https://fontawesome.com/icons).
+</Tip>
+
+## Example Configuration
+
+The following example adds two projects to the section, taken from the theme's example site:
+
+```yaml
+params:
+  projects:
+    enable: true
+    # title: "My Work"   # uncomment to override the default heading
+    items:
+      - title: Hugo Profile
+        content: A highly customizable and mobile first Hugo template for personal portfolio and blog.
+        image: /images/projects/profile.png
+        featured:
+          name: Demo
+          link: https://hugo-profile.netlify.app
+        badges:
+          - "Hugo"
+          - "Bootstrap"
+          - "Javascript"
+        links:
+          - icon: fa fa-envelope
+            url: mailto:?subject=Hugo%20Profile%20Template&body=Check%20it%20out:%20https%3a%2f%2fhugo-profile.netlify.app%2fblog%2fmarkdown-syntax%2f
+          - icon: fab fa-github
+            url: https://github.com/gurusabarish/hugo-profile
+          - icon: fab fa-twitter
+            url: https://twitter.com/intent/tweet?text=Check+it+out:&url=https%3A%2F%2Fgithub.com%2Fgurusabarish%2Fhugo-profile
+
+      - title: Image Converter
+        content: A web app to convert image to pdf, png to jpg, and png to webp without a database using Django.
+        image: /images/projects/converter.jpg
+        featured:
+          name: Demo
+          link: https://django-converter.herokuapp.com
+        badges:
+          - "Django"
+          - "Bootstrap"
+        links:
+          - icon: fab fa-github
+            url: https://github.com/gurusabarish/converter
+```
+
+<Note>
+  Projects can also be sourced from individual content files of type `projects` placed in your `content/` directory. Content-file projects are automatically appended to the grid and include a "Know more" link to the full page.
+</Note>

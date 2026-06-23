@@ -1,0 +1,120 @@
+---
+title: "Deploy Hugo Profile to Netlify"
+sidebarTitle: "Netlify"
+description: "Deploy your Hugo Profile site to Netlify using the Use This Template flow or manual repository connection with automatic rebuilds on every push."
+---
+
+Netlify is the easiest way to deploy Hugo Profile — you get automatic builds, HTTPS, and a global CDN for free. Every push to your connected repository triggers a fresh build, so your live site stays in sync with your content without any manual steps.
+
+## Deployment paths
+
+<Tabs>
+  <Tab title="Use This Template (fastest)">
+    The quickest route to a live site is to start directly from the Hugo Profile repository using GitHub's template feature. Netlify will detect the included `netlify.toml` automatically — no manual build configuration required.
+
+    <Steps>
+      <Step title="Create your repository">
+        Open [https://github.com/gurusabarish/hugo-profile](https://github.com/gurusabarish/hugo-profile) and click **Use this template**, then **Create a new repository**. Give your repository a name and choose a visibility setting.
+      </Step>
+      <Step title="Add the site to Netlify">
+        Go to [https://app.netlify.com](https://app.netlify.com), click **Add new site**, then select **Import an existing project**.
+      </Step>
+      <Step title="Connect your GitHub repository">
+        Authorize Netlify to access GitHub if prompted, then select the repository you just created.
+      </Step>
+      <Step title="Review build settings">
+        Netlify automatically detects the `netlify.toml` in the repository root and pre-fills the build command and publish directory. No changes are needed.
+      </Step>
+      <Step title="Deploy">
+        Click **Deploy site**. Netlify builds the site and gives you a live URL within a minute or two.
+      </Step>
+    </Steps>
+
+    <Note>
+      Any changes you push to files inside the `exampleSite/` folder will automatically trigger a redeployment on Netlify.
+    </Note>
+  </Tab>
+  <Tab title="From Quick Start setup">
+    If you followed the [Quick Start guide](/quickstart) to scaffold a new Hugo site locally, you can still connect it to Netlify with a small amount of additional configuration.
+
+    <Steps>
+      <Step title="Push your site to a remote repository">
+        Initialize a Git repository inside your site's root directory (if you haven't already) and push it to a new repository on GitHub or GitLab.
+
+        ```bash
+        git init
+        git add .
+        git commit -m "Initial commit"
+        git remote add origin https://github.com/your-username/your-site.git
+        git push -u origin main
+        ```
+      </Step>
+      <Step title="Add the site to Netlify">
+        In the [Netlify dashboard](https://app.netlify.com), click **Add new site** > **Import an existing project**, then connect your GitHub or GitLab account and select your repository.
+      </Step>
+      <Step title="Configure build settings">
+        Set the following values in the build settings form:
+
+        | Setting | Value |
+        |---|---|
+        | Build command | `hugo` |
+        | Publish directory | `public` |
+
+        Then add an environment variable to pin the Hugo version:
+
+        | Key | Value |
+        |---|---|
+        | `HUGO_VERSION` | `0.143.0` |
+      </Step>
+      <Step title="Deploy">
+        Click **Deploy site**. Netlify runs `hugo`, places output into `public/`, and serves it on your Netlify subdomain.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## netlify.toml reference
+
+The repository ships with a `netlify.toml` that drives automated deployments for the template flow. Here is what the key sections do:
+
+```toml
+[build]
+  publish = "exampleSite/public"
+  command = "cd exampleSite && hugo --gc --minify --themesDir ../.."
+
+[context.production.environment]
+  HUGO_VERSION = "0.143.0"
+  HUGO_ENV = "production"
+  HUGO_ENABLEGITINFO = "true"
+
+[context.deploy-preview]
+  command = "cd exampleSite && hugo --gc --minify --buildFuture --themesDir ../.. -b $DEPLOY_PRIME_URL"
+
+[context.deploy-preview.environment]
+  HUGO_VERSION = "0.143.0"
+```
+
+<Note>
+  If you scaffolded your own site with the Quick Start guide, your build command is simply `hugo` and your publish directory is `public` — the `exampleSite/` paths in the default `netlify.toml` only apply to the template repository layout.
+</Note>
+
+## Custom domain
+
+You can point your own domain to your Netlify site at any time:
+
+1. In the Netlify dashboard, open your site and go to **Domain settings** > **Add a domain**.
+2. Enter your domain name and follow the DNS instructions Netlify provides.
+3. Netlify automatically provisions a TLS certificate via Let's Encrypt — HTTPS is enabled without any extra steps.
+
+<Warning>
+  Before going live on a custom domain, update `baseURL` in your `hugo.yaml` to match the production domain exactly. Mismatched `baseURL` values cause broken asset paths and incorrect canonical links.
+
+  ```yaml
+  baseURL: "https://www.yourdomain.com"
+  ```
+</Warning>
+
+## Further reading
+
+- [Hugo's official Netlify hosting guide](https://gohugo.io/hosting-and-deployment/hosting-on-netlify/)
+- [Netlify environment variables](https://docs.netlify.com/configure-builds/environment-variables/)

@@ -1,0 +1,101 @@
+---
+title: "Configure the Contact Section in Hugo Profile"
+sidebarTitle: "Contact"
+description: "Set up the Hugo Profile contact section with a mailto button or FormSpree-powered contact form — no backend server required."
+---
+
+The Contact section gives visitors a way to reach you directly from the homepage. It supports two modes: a simple **mailto button** that opens the visitor's email client, or a **FormSpree-powered contact form** that accepts name, email, and message submissions without any backend server. Both modes are configured under `params.contact` in your `hugo.yaml`.
+
+## Enable the Section
+
+<ParamField path="params.contact.enable" type="boolean" default="false">
+  Set to `true` to display the Contact section on the homepage.
+</ParamField>
+
+## Common Fields
+
+These fields apply to both contact modes:
+
+<ParamField path="params.contact.title" type="string">
+  Section heading. Defaults to the built-in i18n string `"Get in Touch"` when omitted.
+</ParamField>
+
+<ParamField path="params.contact.content" type="string">
+  A short message displayed above the button or form. Supports emoji shortcodes (e.g., `:wave:`). Markdown is also rendered.
+</ParamField>
+
+<ParamField path="params.contact.btnName" type="string">
+  Label text for the submit or mailto button (e.g., `"Mail me"` or `"Send Message"`).
+</ParamField>
+
+## Mode 1 — Mailto Button
+
+The simplest setup: a single button that opens the visitor's default mail client with a pre-addressed email.
+
+<ParamField path="params.contact.btnLink" type="string">
+  The full `mailto:` URL for the button (e.g., `mailto:hello@example.com`). Takes priority over `email` if both are set.
+</ParamField>
+
+<ParamField path="params.contact.email" type="string">
+  An alternative to `btnLink`. Provide just the email address and Hugo Profile will automatically construct the `mailto:` link.
+</ParamField>
+
+## Mode 2 — FormSpree Form
+
+Enable an embedded contact form powered by [FormSpree](https://formspree.io). When active, `btnLink` and `email` are ignored.
+
+<ParamField path="params.contact.formspree.enable" type="boolean" default="false">
+  Set to `true` to switch from the mailto button to the embedded FormSpree form.
+</ParamField>
+
+<ParamField path="params.contact.formspree.formId" type="string">
+  Your FormSpree form ID. Extract it from your endpoint URL — for `https://formspree.io/f/abcdefgh` the ID is `abcdefgh`.
+</ParamField>
+
+<ParamField path="params.contact.formspree.emailCaption" type="string">
+  Placeholder text for the email input field. Defaults to the i18n string `"Your email address"`.
+</ParamField>
+
+<ParamField path="params.contact.formspree.messageCaption" type="string">
+  Placeholder text for the message textarea. Defaults to the i18n string `"Your message"`.
+</ParamField>
+
+<ParamField path="params.contact.formspree.messageRows" type="integer" default="3">
+  Number of visible rows for the message textarea.
+</ParamField>
+
+## Configuration Examples
+
+<Tabs>
+  <Tab title="Mailto Button">
+    ```yaml
+    params:
+      contact:
+        enable: true
+        # title: "Get in Touch"   # uncomment to override the default heading
+        content: My inbox is always open. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+        btnName: Mail me
+        btnLink: mailto:hello@example.com
+    ```
+  </Tab>
+  <Tab title="FormSpree Form">
+    ```yaml
+    params:
+      contact:
+        enable: true
+        # title: "Get in Touch"   # uncomment to override the default heading
+        content: My inbox is always open. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+        btnName: Send Message
+        formspree:
+          enable: true       # mailto button is ignored when this is true
+          formId: abcdefgh   # from https://formspree.io/f/abcdefgh
+          emailCaption: "Enter your email address"
+          messageCaption: "Enter your message here"
+          messageRows: 5
+    ```
+  </Tab>
+</Tabs>
+
+<Tip>
+  Sign up for a free account at [formspree.io](https://formspree.io) to get your form ID. The free tier allows up to 50 submissions per month with no credit card required.
+</Tip>

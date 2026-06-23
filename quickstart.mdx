@@ -1,47 +1,115 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Hugo Profile in Minutes"
+sidebarTitle: "Quickstart"
+description: "Create and launch your Hugo Profile portfolio site in under 5 minutes. Covers site creation, theme setup, example content, and the dev server."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
+The goal of this guide is to get a fully working Hugo Profile portfolio site running on your local machine as quickly as possible. By the end you'll have every section — Hero, About, Experience, Education, Projects, Achievements, and Contact — populated with example content and live in your browser, ready to customize with your own information.
 
 ## Prerequisites
 
-Before you begin, you must have:
+- **Hugo 0.87.0 or higher** installed on your machine. Verify with `hugo version`. If Hugo isn't installed, see the [official installation guide](https://gohugo.io/installation/).
+- **Git** installed (required to fetch the theme).
 
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+## Steps
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Create a new Hugo site">
+    Run the following command to scaffold a new Hugo project. The `--format="yaml"` flag tells Hugo to generate a `hugo.yaml` configuration file instead of the default `hugo.toml`. Hugo Profile's example configuration is written in YAML, so this keeps everything consistent.
 
     ```bash
-    npm install your-package
+    hugo new site my-portfolio --format="yaml"
+    cd my-portfolio
     ```
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
+
+  <Step title="Add the Hugo Profile theme">
+    Choose the method that best fits your workflow. Git Submodule is recommended for most users because it makes future theme updates straightforward.
+
+    <Tabs>
+      <Tab title="Option A: Git Submodule (recommended)">
+        A submodule links your site to the upstream theme repository. You can pull theme updates at any time with a single command without touching your own content.
+
+        ```bash
+        git init
+        git submodule add https://github.com/gurusabarish/hugo-profile.git themes/hugo-profile
+        ```
+      </Tab>
+      <Tab title="Option B: Git Clone">
+        Cloning copies the theme directly into your `themes/` directory. Choose this if you plan to make extensive modifications to the theme's layout or template files.
+
+        ```bash
+        cd themes
+        git clone https://github.com/gurusabarish/hugo-profile.git
+        cd ..
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Copy the example configuration">
+    Replace the default empty `hugo.yaml` with the fully populated example config that ships with the theme. This single file configures your site title, all portfolio sections, navbar, footer, and theme settings.
 
     ```bash
-    your-cli init
+    cp -f themes/hugo-profile/exampleSite/hugo.yaml ./hugo.yaml
     ```
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+
+  <Step title="Start the development server">
+    Launch the Hugo local server with live reload. Any changes you save to `hugo.yaml` or content files will be reflected in the browser instantly.
 
     ```bash
-    your-cli start
+    hugo server
     ```
+
+    <Tip>
+      Open [http://localhost:1313](http://localhost:1313) in your browser to see your site. The server watches for file changes and automatically refreshes the page — no manual reload needed.
+    </Tip>
+  </Step>
+
+  <Step title="Copy example content and assets">
+    On first run the site may look incomplete — images will be missing and the Blog and Gallery sections may not render. This is because Hugo expects static assets in the root-level `static/` directory and content pages in the root-level `content/` directory, but those files currently live inside the theme's `exampleSite/` folder.
+
+    Copy them across with `rsync`:
+
+    ```bash
+    rsync -av themes/hugo-profile/exampleSite/static/ ./static/
+    rsync -av themes/hugo-profile/exampleSite/content/ ./content/
+    ```
+
+    After running these commands, refresh your browser and the complete example site will appear. You can then replace this placeholder content with your own images, blog posts, and project details.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## What You'll See
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+Once the dev server is running with the example content copied, your site will include the following sections:
+
+| Section | Description |
+|---|---|
+| **Hero** | Your name, title, subtitle, a profile image, resume download button, and social links. |
+| **About** | A bio paragraph, profile photo, and a list of recent technologies you've worked with. |
+| **Experience** | Work history organized by company, with role names, dates, and rich text descriptions. |
+| **Education** | Academic background with school names, dates, GPA, and linked publications. |
+| **Projects** | Project cards with images, description, badges, featured demo links, and icon links. |
+| **Achievements** | Award and milestone cards with images, descriptions, and optional external links. |
+| **Contact** | A call-to-action message with a mailto button, or a FormSpree-powered contact form. |
+
+All sections are individually toggled via `enable: true/false` in `hugo.yaml`, so you can hide any section you don't need.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Configuration Overview" icon="sliders" href="/configuration/overview">
+    Deep dive into every option available in `hugo.yaml`.
+  </Card>
+  <Card title="Hero Section" icon="star" href="/sections/hero">
+    Customize your intro, profile image, buttons, and social links.
+  </Card>
+  <Card title="Blog" icon="pen-nib" href="/features/blog">
+    Write posts, add tags and categories, and configure read time and comments.
+  </Card>
+  <Card title="Deploy to Netlify" icon="cloud-arrow-up" href="/deployment/netlify">
+    Publish your portfolio live with Netlify's free tier in minutes.
+  </Card>
+</CardGroup>

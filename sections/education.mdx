@@ -1,0 +1,127 @@
+---
+title: "Configure the Education Section in Hugo Profile"
+sidebarTitle: "Education"
+description: "List your academic credentials in Hugo Profile with degree titles, school names, dates, GPA, and links to records or transcripts."
+---
+
+The Education section displays your academic history as a series of cards, each showing a degree, institution, date range, GPA, optional extra content such as extracurricular activities or publications, and an optional featured link to a transcript or academic record. All configuration lives under `params.education` in your `hugo.yaml`.
+
+## Enable the section
+
+<ParamField path="params.education.enable" type="boolean" default="false">
+  Set to `true` to render the Education section on your home page.
+</ParamField>
+
+<ParamField path="params.education.title" type="string">
+  Custom section heading. Defaults to the i18n key `"Education"` when omitted.
+</ParamField>
+
+<ParamField path="params.education.index" type="boolean" default="false">
+  When `true`, a numbered index badge is displayed to the left of each education card on medium and larger screens. Useful when you want to make the ordering of entries visually explicit.
+</ParamField>
+
+## Item fields
+
+Each entry in the `items` array represents one academic credential.
+
+<ParamField path="params.education.items[].title" type="string" required>
+  The name of the degree or qualification (e.g., `"Bachelor of Science in Computer Science"`).
+</ParamField>
+
+<ParamField path="params.education.items[].school.name" type="string">
+  The full name of the institution (e.g., `"Massachusetts Institute of Technology"`).
+</ParamField>
+
+<ParamField path="params.education.items[].school.url" type="string">
+  URL of the institution's website. When provided, the school name is rendered as a clickable link.
+</ParamField>
+
+<ParamField path="params.education.items[].date" type="string">
+  A human-readable date range string (e.g., `"2009 - 2013"`). Displayed in the top-right corner of the card.
+</ParamField>
+
+<ParamField path="params.education.items[].GPA" type="string">
+  Your GPA, formatted however you prefer (e.g., `"3.9 out of 5.0"`). Displayed in italics beneath the school name. Omit the field entirely if you do not want to show a GPA.
+</ParamField>
+
+<ParamField path="params.education.items[].content" type="string">
+  Additional details about the credential. Supports full Markdown — ideal for listing extracurricular activities, publications, awards, or notable coursework. Use the `|-` YAML block scalar to write multi-line content:
+
+  ```yaml
+  content: |-
+    Extracurricular Activities
+      - Robotics club president, 2011–2013.
+      - Teaching assistant for Introduction to Algorithms.
+  ```
+</ParamField>
+
+## Featured link
+
+<ParamField path="params.education.items[].featuredLink.enable" type="boolean">
+  Set to `true` to show a button link at the bottom of the education card.
+</ParamField>
+
+<ParamField path="params.education.items[].featuredLink.name" type="string">
+  The button label (e.g., `"My academic record"`). Defaults to `"Featured"` if `enable` is `true` but `name` is omitted.
+</ParamField>
+
+<ParamField path="params.education.items[].featuredLink.url" type="string">
+  The URL the featured link button points to (e.g., a link to an online transcript or degree verification page).
+</ParamField>
+
+<Note>
+  If `featuredLink.enable` is `false` or the `featuredLink` key is absent, no button is rendered — you do not need to include the other `featuredLink` fields.
+</Note>
+
+## Complete example
+
+```yaml
+params:
+  education:
+    enable: true
+    # title: "Custom Name"
+    index: false
+    items:
+      - title: "Master of Business Administration"
+        school:
+          name: "University of California, Berkeley"
+          url: "https://example.org"
+        date: "2013 - 2015"
+        GPA: "3.8 out of 5.0"
+        content: |-
+          Extracurricular Activities
+            - Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            - Tempora esse, eaque delectus nulla quo doloribus itaque expedita alias natus optio totam maxime nihil excepturi velit a animi laborum hic similique.
+
+      - title: "Bachelor of Science in Computer Science"
+        school:
+          name: "Massachusetts Institute of Technology"
+          url: "https://example.org"
+        date: "2009 - 2013"
+        GPA: "3.9 out of 5.0"
+        content: |-
+          I published two papers in the ACM SIGCHI Conference on Artificial Intelligence.
+          - [Fast and Accurate Object Detection with a Single Convolutional Neural Network](https://example.com)
+          - Face mask detection using a single convolutional neural network.
+
+          Extracurricular Activities
+            - Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            - Tempora esse, eaque delectus nulla quo doloribus itaque expedita alias natus optio totam maxime nihil excepturi velit a animi laborum hic similique.
+        featuredLink:
+          enable: true
+          name: "My academic record"
+          url: "https://example.com"
+
+      - title: "High School"
+        school:
+          name: "Thomas Jefferson High School for Science and Technology."
+          url: "https://example.org"
+        GPA: "4.2 out of 5.0"
+        featuredLink:
+          enable: true
+          url: "https://example.com"
+```
+
+<Tip>
+  Set `index: true` when you have several entries and want readers to clearly see the chronological order. The numbered badge appears on the left side of each card on medium screens and larger.
+</Tip>

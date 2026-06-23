@@ -1,0 +1,90 @@
+---
+title: "Hugo Profile: Mobile-First Hugo Portfolio Theme"
+sidebarTitle: "Introduction"
+description: "Hugo Profile is a highly customizable Hugo theme for personal portfolios and blogs. Learn about its features, sections, and how it's structured."
+---
+
+Hugo Profile is a high-performance, mobile-first Hugo theme built for developers, designers, and creators who want a beautiful personal portfolio and blog — without wrestling with complex setups. Powered by Bootstrap 5 and Font Awesome 6, every section of the site — from your hero introduction to your project showcase — is driven by a single `hugo.yaml` configuration file, making customization as simple as editing text. Whether you're a student building your first online presence or a senior engineer looking for a polished professional site, Hugo Profile gives you a fully responsive, SEO-friendly foundation you can launch in minutes.
+
+## Key Features
+
+<CardGroup cols={3}>
+  <Card title="Responsive Design" icon="mobile-screen" href="https://hugo-profile.netlify.app">
+    Mobile-first layout built on Bootstrap 5. Looks great on phones, tablets, and desktops.
+  </Card>
+  <Card title="Light / Dark Mode" icon="circle-half-stroke" href="https://github.com/gurusabarish/hugo-profile/wiki/Color-Customization">
+    Toggle between light, dark, and auto themes. Fully customizable color palette via `hugo.yaml`.
+  </Card>
+  <Card title="Internationalization (i18n)" icon="language" href="https://gohugo.io/content-management/multilingual/">
+    Ships with English, Spanish, and French translations. Add any language with a simple TOML file.
+  </Card>
+  <Card title="Blog & Gallery" icon="newspaper" href="/features/blog">
+    Full-featured blog with categories, tags, read time, scroll progress, and a dedicated image gallery section.
+  </Card>
+  <Card title="Contact Form" icon="envelope" href="https://formspree.io/">
+    Built-in contact integration via FormSpree. No backend or server-side code required.
+  </Card>
+  <Card title="Analytics & Comments" icon="chart-line" href="https://gohugo.io/templates/internal/#google-analytics">
+    First-class support for Google Analytics and Disqus comments — enable either with one line of config.
+  </Card>
+  <Card title="SEO Friendly" icon="magnifying-glass" href="https://hugo-profile.netlify.app">
+    Semantic HTML, Open Graph tags, robots.txt generation, and RSS feeds out of the box.
+  </Card>
+  <Card title="Full-Text Search" icon="search" href="https://hugo-profile.netlify.app">
+    Built-in search powered by a generated JSON index — no external service needed.
+  </Card>
+  <Card title="MathJax Support" icon="square-root-variable" href="https://www.mathjax.org/">
+    Render LaTeX math expressions site-wide or opt in per page with `mathjax: true` in front matter.
+  </Card>
+</CardGroup>
+
+## How It Works
+
+Hugo Profile is driven entirely by a single `hugo.yaml` file at your site root. Every portfolio section — Hero, About, Experience, Education, Projects, Achievements, and Contact — maps to a block in the `params` section of that file. Enabling or disabling a section is as simple as flipping its `enable` flag:
+
+```yaml
+params:
+  hero:
+    enable: true     # Show the hero section
+  experience:
+    enable: true     # Show work experience
+  education:
+    enable: false    # Hide education section
+  projects:
+    enable: true     # Show projects
+  achievements:
+    enable: true     # Show achievements
+  contact:
+    enable: true     # Show contact form
+```
+
+There are no layout files to edit and no template overrides required to get started. Swap in your own text, images, and links inside `hugo.yaml`, and the theme handles all the rendering. When you need deeper customization — custom colors, fonts, navbar alignment, or additional scripts — all of those knobs live in the same file.
+
+## Requirements
+
+Hugo Profile requires **Hugo version 0.87.0 or higher**. To check your currently installed version, run:
+
+```bash
+hugo version
+```
+
+The output will look something like `hugo v0.143.0+extended`. If Hugo is not installed yet, follow the [official Hugo installation guide](https://gohugo.io/installation/) to get it set up for your operating system.
+
+## Live Demo
+
+See Hugo Profile running in production before you install anything:
+
+👉 [https://hugo-profile.netlify.app](https://hugo-profile.netlify.app)
+
+The demo site is the unmodified example configuration that ships with the theme, so everything you see there is achievable straight out of the box.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Have a working portfolio site running locally in under 5 minutes.
+  </Card>
+  <Card title="Installation" icon="download" href="/installation">
+    Detailed installation options: Git clone vs. Git submodule.
+  </Card>
+</CardGroup>

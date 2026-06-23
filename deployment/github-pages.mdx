@@ -1,0 +1,125 @@
+---
+title: "Deploy Hugo Profile to GitHub Pages"
+sidebarTitle: "GitHub Pages"
+description: "Host your Hugo Profile portfolio on GitHub Pages for free. Set up a GitHub Actions workflow for automatic builds and deployment on every commit."
+---
+
+GitHub Pages offers free static hosting for Hugo sites with no server to manage. By pairing it with a GitHub Actions workflow, every commit you push to the `main` branch automatically rebuilds your site and publishes the result — no manual `hugo` runs or file uploads needed.
+
+## Setup
+
+<Steps>
+  <Step title="Set your baseURL">
+    Open `hugo.yaml` in your site root and set `baseURL` to your GitHub Pages URL. The format depends on whether you are using a personal/organization site or a project site:
+
+    ```yaml
+    # Project site (most common)
+    baseURL: "https://username.github.io/repository-name/"
+
+    # Personal or organization site (repo named username.github.io)
+    baseURL: "https://username.github.io/"
+    ```
+
+    <Warning>
+      Hugo uses `baseURL` to build all internal links and asset paths. Deploying with the wrong value produces broken stylesheets and navigation.
+    </Warning>
+  </Step>
+  <Step title="Push your site to GitHub">
+    If your site is not already in a GitHub repository, initialize one and push:
+
+    ```bash
+    git init
+    git add .
+    git commit -m "Initial commit"
+    git remote add origin https://github.com/username/repository-name.git
+    git push -u origin main
+    ```
+  </Step>
+  <Step title="Create the GitHub Actions workflow">
+    Create the file `.github/workflows/hugo.yml` in your repository with the following content:
+
+    ```yaml
+    name: Deploy Hugo site to Pages
+
+    on:
+      push:
+        branches: ["main"]
+      workflow_dispatch:
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+            with:
+              submodules: recursive
+          - name: Setup Hugo
+            uses: peaceiris/actions-hugo@v2
+            with:
+              hugo-version: '0.115.1'
+              extended: false
+          - name: Build
+            run: hugo --minify
+          - name: Upload artifact
+            uses: actions/upload-pages-artifact@v2
+            with:
+              path: ./public
+      deploy:
+        environment:
+          name: github-pages
+          url: ${{ steps.deployment.outputs.page_url }}
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+          - name: Deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v2
+    ```
+
+    <Note>
+      The `submodules: recursive` flag in the Checkout step is required if you added the Hugo Profile theme as a Git submodule. If you cloned the theme directly into `themes/`, this flag is harmless but still safe to keep.
+    </Note>
+  </Step>
+  <Step title="Enable GitHub Pages in repository settings">
+    In your repository, go to **Settings** > **Pages**. Under **Build and deployment**, set the **Source** to **GitHub Actions**. This tells GitHub to use the artifact uploaded by the workflow rather than a branch.
+  </Step>
+  <Step title="Trigger your first deployment">
+    Push any commit to the `main` branch (or click **Run workflow** manually in the **Actions** tab). GitHub Actions will build your site and deploy it. Once the workflow completes, your site is live at the URL shown in **Settings** > **Pages**.
+  </Step>
+</Steps>
+
+## Custom domain
+
+To use your own domain with GitHub Pages:
+
+1. Create a file named `CNAME` inside your site's `static/` directory containing only your domain name:
+
+   ```
+   www.yourdomain.com
+   ```
+
+   Hugo copies everything in `static/` to the root of the built site, so the `CNAME` file will be present in `public/` after each build.
+
+2. In your repository, go to **Settings** > **Pages** > **Custom domain**, enter the same domain, and save. GitHub will verify DNS and provision a TLS certificate automatically.
+
+3. Update `baseURL` in `hugo.yaml` to your custom domain:
+
+   ```yaml
+   baseURL: "https://www.yourdomain.com/"
+   ```
+
+## Tips
+
+<Tip>
+  The `hugo --minify` flag in the build step strips whitespace from HTML, CSS, and JavaScript output. It reduces total page weight with no code changes required.
+</Tip>
+
+<Tip>
+  To pin a specific Hugo version, update the `hugo-version` value in the workflow's **Setup Hugo** step. Hugo Profile requires version **0.87.0 or higher**.
+</Tip>

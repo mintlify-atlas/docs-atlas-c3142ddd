@@ -1,0 +1,143 @@
+---
+title: "Configure the Experience Section in Hugo Profile"
+sidebarTitle: "Experience"
+description: "Document your work history in Hugo Profile using a nested company and job structure with dates, content, and featured technology icons."
+---
+
+The Experience section renders an interactive tabbed timeline of your work history. Companies appear as tabs across the top; clicking a company tab reveals all roles you held there, each with a title, date range, description, and optional technology icons. All configuration lives under `params.experience` in your `hugo.yaml`.
+
+## Enable the section
+
+<ParamField path="params.experience.enable" type="boolean" default="false">
+  Set to `true` to render the Experience section on your home page.
+</ParamField>
+
+<ParamField path="params.experience.title" type="string">
+  Custom section heading. Defaults to the i18n key `"Experience"` when omitted.
+</ParamField>
+
+## Data structure
+
+The `items` array holds one entry per company. Each company entry contains a `jobs` array with one entry per role held at that company.
+
+```
+params.experience.items[]          ← one per company
+  └── .jobs[]                      ← one per role at that company
+```
+
+<Note>
+  Companies are rendered as tab buttons in the order they appear in `items`. List your most recent employer first so it appears as the default active tab.
+</Note>
+
+## Company-level fields
+
+<ParamField path="params.experience.items[].company" type="string" required>
+  The company name. Displayed as both a tab label and inline next to the first job title.
+</ParamField>
+
+<ParamField path="params.experience.items[].companyUrl" type="string">
+  URL of the company website. Used as the `href` on the company name link displayed next to the first job title.
+</ParamField>
+
+<ParamField path="params.experience.items[].jobs" type="array" required>
+  An array of job objects held at this company. See the job-level fields below.
+</ParamField>
+
+## Job-level fields
+
+<ParamField path="jobs[].name" type="string" required>
+  Your job title (e.g., `"Senior Software Developer"`). The first job in each company's list is styled as a larger heading (`h4`); subsequent jobs use `h5`.
+</ParamField>
+
+<ParamField path="jobs[].date" type="string">
+  A human-readable date range string (e.g., `"Jan 2023 - present"` or `"Sep 2020 - Dec 2021"`). Displayed to the right of the job title.
+</ParamField>
+
+<ParamField path="jobs[].content" type="string">
+  Description of your responsibilities and achievements. Supports full Markdown — include bullet lists, bold text, and links. Use the `|` YAML block scalar for multi-line content:
+
+  ```yaml
+  content: |
+    Led the backend team for a customer-facing product.
+
+    - Designed and implemented the REST API.
+    - Reduced average response time by 40%.
+  ```
+</ParamField>
+
+<ParamField path="jobs[].info.content" type="string">
+  Optional short text shown as a tooltip on a small info icon (ⓘ) next to the job title. Use it for a one-line summary or status badge (e.g., `"Working as a senior software developer"`).
+</ParamField>
+
+## Featured technology icons
+
+Each job can display a row of technology icons linking to relevant tools, frameworks, or external resources.
+
+<ParamField path="jobs[].featuredItems.fontAwesomeIcons" type="array">
+  Technology icons using [Font Awesome](https://fontawesome.com/icons) class names. Each object accepts:
+
+  | Key | Type | Description |
+  |-----|------|-------------|
+  | `icon` | string | Font Awesome class string (e.g., `fa-brands fa-react`) |
+  | `url` | string | Link destination URL |
+  | `tooltip` | string | Optional tooltip text shown on hover |
+</ParamField>
+
+<ParamField path="jobs[].featuredItems.customIcons" type="array">
+  Technology icons using custom image files. Each object accepts:
+
+  | Key | Type | Description |
+  |-----|------|-------------|
+  | `icon` | string | Path to the icon image (e.g., `/images/icons/go.png`) |
+  | `url` | string | Link destination URL |
+  | `tooltip` | string | Optional tooltip text shown on hover |
+</ParamField>
+
+## Complete example
+
+```yaml
+params:
+  experience:
+    enable: true
+    # title: "Custom Name"
+    items:
+      - company: "Facebook"
+        companyUrl: "https://example.com"
+        jobs:
+          - name: "Senior Software Developer"
+            date: "Jan 2023 - present"
+            content: "I am currently working as a senior software developer at [example org.](https://example.com) in San Francisco, CA. I am currently working on a project that will be used to help people find the best way to get around the city."
+            info:
+              content: Working as a senior software developer
+            featuredItems:
+              fontAwesomeIcons:
+                - icon: fa-brands fa-react
+                  url: https://react.dev/
+                  tooltip: Example tooltip content
+                - icon: fab fa-x-twitter
+                  url: https://example.com
+              customIcons:
+                - icon: /fav.png
+                  url: "https://example.com"
+                  tooltip: Example tooltip content
+          - name: "Software Developer"
+            date: "Jan 2022 - Dec 2023"
+            content: "I worked as a software developer. I worked on a project that will be used to help people find the best way to get around the city."
+
+      - company: "Amazon"
+        companyUrl: "https://example.com"
+        jobs:
+          - name: "Software Developer"
+            date: "Sep 2020 - Dec 2021"
+            info:
+              content: I worked as a software developer for more than one year in Amazon.
+            content: |
+              I am currently working as a software developer at [example org.](https://example.com) in San Francisco, CA. I am currently working on a project that will be used to help people find the best way to get around the city.
+
+              - Lead backend developer for a product.
+              - Created a frontend design for a product.
+```
+
+<Tip>
+  Jobs within a company tab are listed in the order they appear in the `jobs` array. Place the most recent role first so it appears at the top of the tab panel.
+</Tip>

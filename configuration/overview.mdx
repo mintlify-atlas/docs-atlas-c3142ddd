@@ -1,0 +1,118 @@
+---
+title: "Hugo Profile Configuration Reference"
+sidebarTitle: "Overview"
+description: "Complete reference for hugo.yaml top-level and params settings in Hugo Profile. Covers outputs, pagination, markup, and all params fields."
+---
+
+All Hugo Profile customization lives in a single file — `hugo.yaml` (or `hugo.toml`) at the root of your site. Top-level keys control Hugo's own build behavior, while the `params` block is where you configure every visual and functional aspect of your portfolio theme. This page covers every top-level setting and global `params` field; linked sub-pages go deeper on the navbar, color system, and typography.
+
+## Top-Level Settings
+
+These keys sit at the root of `hugo.yaml` and configure the Hugo build itself.
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `baseURL` | string | Canonical base URL of your site, e.g. `"https://example.com"` |
+| `languageCode` | string | BCP 47 language tag, e.g. `"en-us"` |
+| `title` | string | Site title — used in `<title>` tags and as the default navbar brand name |
+| `theme` | string | Must be `hugo-profile` (or the path to your theme directory) |
+| `defaultContentLanguage` | string | Default language code when multilingual is configured, e.g. `"en"` |
+| `enableRobotsTXT` | boolean | When `true`, Hugo generates a `robots.txt` file |
+| `pagination.pagerSize` | integer | Number of posts shown per blog list page; default: `10` |
+| `outputs.home` | list | Output formats for the home page — must include `"JSON"` to enable site search |
+| `markup.goldmark.renderer.unsafe` | boolean | Allow raw HTML inside Markdown content; set `true` if you use HTML in `.md` files |
+
+<Note>
+The `outputs.home` list must contain `"HTML"`, `"RSS"`, and `"JSON"` for the built-in search feature to work. Omitting `"JSON"` disables search entirely.
+</Note>
+
+## Global `params` Fields
+
+All fields below live under the top-level `params:` key.
+
+<ParamField path="params.title" type="string">
+  Site title displayed in the navbar brand area. Falls back to the top-level `title` key if omitted.
+</ParamField>
+
+<ParamField path="params.description" type="string">
+  Meta description injected into `<meta name="description">` and used by the OpenGraph partial.
+</ParamField>
+
+<ParamField path="params.favicon" type="string">
+  Site-relative path to the favicon image, e.g. `"/fav.png"`. Also used as the default navbar brand logo when `params.navbar.brandLogo` is not set.
+</ParamField>
+
+<ParamField path="params.staticPath" type="string">
+  Optional URL prefix prepended to all static asset paths (CSS, JS, Bootstrap). Use this to serve assets from a CDN or a different subdirectory. Leave unset or empty to serve assets locally.
+</ParamField>
+
+<ParamField path="params.useBootstrapCDN" type="boolean | string">
+  Controls whether Bootstrap is loaded from jsDelivr CDN instead of locally.
+
+  - `false` (default) — Bootstrap is served from your own static files
+  - `true` — both Bootstrap CSS **and** JS are loaded from CDN
+  - `"css"` — only Bootstrap CSS is loaded from CDN
+  - `"js"` — only Bootstrap JS is loaded from CDN
+</ParamField>
+
+<ParamField path="params.cloudinary_cloud_name" type="string">
+  Your Cloudinary cloud name. When set, the theme can construct dynamic responsive image URLs from Cloudinary. Your images must already be uploaded to the specified Cloudinary account.
+</ParamField>
+
+<ParamField path="params.mathjax" type="boolean" default="false">
+  When `true`, MathJax is loaded on every page of the site. You can also enable it selectively per page by adding `mathjax: true` to that page's frontmatter.
+</ParamField>
+
+<ParamField path="params.animate" type="boolean" default="true">
+  Enables CSS fade animations on the home page. When `true`, the hero content fades in from the left, the navbar fades down from the top, and the hero image fades in. Set to `false` for an instant, static render.
+</ParamField>
+
+## Minimal Working Example
+
+The following `hugo.yaml` is enough to get a site running with search enabled and sensible defaults:
+
+```yaml
+baseURL: "https://yoursite.example.com"
+languageCode: "en-us"
+title: "Your Name"
+theme: hugo-profile
+
+enableRobotsTXT: true
+
+pagination:
+  pagerSize: 3
+
+outputs:
+  home:
+    - "HTML"
+    - "RSS"
+    - "JSON"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+params:
+  title: "Your Name"
+  description: "Personal portfolio and blog of Your Name."
+  favicon: "/fav.png"
+
+  useBootstrapCDN: false
+  mathjax: false
+  animate: true
+```
+
+## Next Steps
+
+<CardGroup cols={3}>
+  <Card title="Navbar" href="/configuration/navbar">
+    Configure brand logo, alignment, sticky behavior, search, and per-section menu visibility.
+  </Card>
+  <Card title="Color Theming" href="/configuration/color-theming">
+    Customize light and dark mode colors using `params.color` and `params.theme`.
+  </Card>
+  <Card title="Fonts & Animation" href="/configuration/fonts-and-animation">
+    Adjust base typography, line height, text alignment, and fade animation behavior.
+  </Card>
+</CardGroup>

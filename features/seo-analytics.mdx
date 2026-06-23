@@ -1,0 +1,113 @@
+---
+title: "SEO, Analytics, and Comments in Hugo Profile"
+sidebarTitle: "SEO & Analytics"
+description: "Configure Hugo Profile for SEO with robots.txt, meta tags, and Open Graph. Add Google Analytics and Disqus comments via Hugo's built-in services."
+---
+
+Hugo Profile is SEO-friendly out of the box and integrates with Google Analytics and Disqus through Hugo's built-in services configuration. Meta tags, Open Graph, and a robots.txt file are all handled automatically — you just supply the right values in `hugo.yaml`.
+
+## SEO
+
+### Robots.txt
+
+Enable automatic `robots.txt` generation by setting the top-level `enableRobotsTXT` flag in `hugo.yaml`:
+
+```yaml
+enableRobotsTXT: true
+```
+
+When set to `true`, Hugo generates a standard `robots.txt` at the site root that allows all crawlers.
+
+### Meta Description and Title
+
+The `params.description` and `params.title` values populate the global `<meta name="description">` tag and page `<title>` elements throughout the site:
+
+```yaml
+params:
+  title: "Hugo Profile"
+  description: "A personal portfolio and blog built with Hugo."
+```
+
+### Open Graph and Twitter Cards
+
+Open Graph and Twitter card `<meta>` tags are included in the base template's `<head>` partial automatically. The single-post template sets `<meta name="description">` from `params.description` on the frontmatter of each page. No additional configuration is required for basic Open Graph support.
+
+<Tip>
+  Fill in the `description` field in each blog post's frontmatter. This value is used as the Open Graph description and appears in social media previews when the post is shared.
+</Tip>
+
+## Google Analytics
+
+Hugo Profile uses Hugo's built-in Google Analytics integration. Add your Measurement ID under the `services` block in `hugo.yaml`:
+
+```yaml
+services:
+  googleAnalytics:
+    id: G-MEASUREMENT_ID
+```
+
+Replace `G-MEASUREMENT_ID` with the actual ID from your [Google Analytics](https://analytics.google.com) property (for example, `G-XXXXXXXXXX`). Hugo injects the Analytics script into every page automatically when this ID is present.
+
+<Note>
+  In the example `hugo.yaml` the `services` block is commented out by default. Uncomment it and replace the placeholder ID to activate tracking.
+</Note>
+
+## Disqus Comments
+
+Disqus comment threads are rendered at the bottom of every single blog post page. Configure your Disqus shortname under the `services` block:
+
+```yaml
+services:
+  disqus:
+    shortname: your-disqus-shortname
+```
+
+Replace `your-disqus-shortname` with the shortname from your [Disqus](https://disqus.com) account settings. The comment section is injected by Hugo's built-in `_internal/disqus.html` partial and appears automatically on all single post pages once the shortname is set.
+
+<Tip>
+  You can configure both Google Analytics and Disqus in the same `services` block:
+
+  ```yaml
+  services:
+    googleAnalytics:
+      id: G-XXXXXXXXXX
+    disqus:
+      shortname: my-site
+  ```
+</Tip>
+
+## Social Sharing
+
+Each blog post includes share buttons for LinkedIn, Twitter/X, WhatsApp, and email in the right sidebar. Enable or disable them globally with:
+
+```yaml
+params:
+  singlePages:
+    socialShare: true
+```
+
+When `socialShare` is `true`, share links are generated automatically using the post's title, description, and permalink. Setting it to `false` hides the entire social sharing sidebar section.
+
+## MathJax
+
+Hugo Profile supports [MathJax](https://www.mathjax.org/) for rendering mathematical notation. You can enable it globally for all pages or opt in per post.
+
+**Global** — enable MathJax on every page:
+
+```yaml
+params:
+  mathjax: false   # Set to true to enable site-wide
+```
+
+**Per post** — enable MathJax only on a specific blog post by adding `mathjax: true` to the post's frontmatter:
+
+```markdown
+---
+title: "Fourier Transforms Explained"
+mathjax: true
+---
+```
+
+<Note>
+  Hugo Profile uses Hugo's official built-in integrations for both Google Analytics (`services.googleAnalytics`) and Disqus (`services.disqus`). These are the same hooks used across all Hugo themes, so you can refer to the [Hugo services documentation](https://gohugo.io/getting-started/configuration/#configure-services) for additional options and advanced configuration.
+</Note>

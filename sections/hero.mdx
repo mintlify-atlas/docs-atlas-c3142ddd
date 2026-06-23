@@ -1,0 +1,130 @@
+---
+title: "Configure the Hero Section in Hugo Profile"
+sidebarTitle: "Hero"
+description: "Set up the Hugo Profile hero section with your name, subtitle, intro text, profile image, resume button, and social media icon links."
+---
+
+The hero section is the full-viewport banner at the top of your portfolio site — the first thing every visitor sees. It displays your intro line, name, tagline, a short paragraph, a profile image, an optional resume button, and a row of social media icons. All hero configuration lives under `params.hero` in your `hugo.yaml`.
+
+## Enable the section
+
+<ParamField path="params.hero.enable" type="boolean" default="false">
+  Set to `true` to render the hero section on your home page.
+</ParamField>
+
+## Text content
+
+<ParamField path="params.hero.intro" type="string">
+  Small label rendered above your name. Typically a greeting such as `"Hi, my name is"`.
+</ParamField>
+
+<ParamField path="params.hero.title" type="string">
+  Your name, displayed as a large heading in the theme's primary color. Include trailing punctuation if you like (e.g., `"Isabella."`).
+</ParamField>
+
+<ParamField path="params.hero.subtitle" type="string">
+  A short tagline rendered beneath your name (e.g., `"I build things for the web"`).
+</ParamField>
+
+<ParamField path="params.hero.content" type="string">
+  A paragraph of descriptive text. Supports Markdown, so you can include **bold**, _italic_, or [links](https://example.com).
+</ParamField>
+
+## Image
+
+<ParamField path="params.hero.image" type="string">
+  Path to the hero image displayed on the right side of the section (e.g., `/images/hero.svg`). Accepts any path relative to the `static/` directory or an absolute URL.
+</ParamField>
+
+<ParamField path="params.hero.roundImage" type="boolean" default="false">
+  When `true`, applies a `rounded-circle` CSS class to the hero image, making it circular.
+</ParamField>
+
+<ParamField path="params.hero.bottomImage.enable" type="boolean" default="true">
+  Toggles a decorative dot-grid SVG placed at the bottom-left of the hero section. Visible on medium screens and larger.
+</ParamField>
+
+## Resume button
+
+<ParamField path="params.hero.button.enable" type="boolean">
+  Set to `true` to show a call-to-action button beneath the content paragraph.
+</ParamField>
+
+<ParamField path="params.hero.button.name" type="string">
+  The label displayed on the button (e.g., `"Resume"`).
+</ParamField>
+
+<ParamField path="params.hero.button.url" type="string">
+  The URL the button links to. Use a relative path such as `/resume.pdf` to serve a file from your `static/` directory, or any external URL.
+</ParamField>
+
+<ParamField path="params.hero.button.download" type="boolean">
+  When `true`, adds the HTML `download` attribute to the link, prompting the browser to download the file instead of navigating to it.
+</ParamField>
+
+<ParamField path="params.hero.button.newPage" type="boolean" default="true">
+  When `true`, opens the button link in a new browser tab (`target="_blank"`). Set to `false` to open in the same tab.
+</ParamField>
+
+## Social links
+
+Social icons are rendered in a row next to the resume button. You can use Font Awesome icons, custom image icons, or both.
+
+<ParamField path="params.hero.socialLinks.fontAwesomeIcons" type="array">
+  A list of social link objects using [Font Awesome](https://fontawesome.com/icons) class names. Each object accepts:
+
+  | Key | Type | Description |
+  |-----|------|-------------|
+  | `icon` | string | Font Awesome class string (e.g., `fab fa-github`) |
+  | `url` | string | Link destination URL |
+  | `tooltip` | string | Optional tooltip text shown on hover |
+</ParamField>
+
+<ParamField path="params.hero.socialLinks.customIcons" type="array">
+  A list of social link objects using custom image files instead of Font Awesome. Each object accepts:
+
+  | Key | Type | Description |
+  |-----|------|-------------|
+  | `icon` | string | Path to the icon image (e.g., `/images/icons/myicon.png`) |
+  | `url` | string | Link destination URL |
+  | `tooltip` | string | Optional tooltip text shown on hover |
+</ParamField>
+
+<Note>
+  Icons whose `url` begins with `#` are treated as same-page anchors and will **not** open in a new tab, regardless of other settings.
+</Note>
+
+## Complete example
+
+```yaml
+params:
+  hero:
+    enable: true
+    intro: "Hi, my name is"
+    title: "Isabella."
+    subtitle: "I build things for the web"
+    content: "A passionate web app developer. I tend to make use of modern web technologies to build websites that look great, feel fantastic, and function correctly."
+    image: /images/hero.svg
+    bottomImage:
+      enable: true
+    # roundImage: true  # Make hero image circular | default false
+    button:
+      enable: true
+      name: "Resume"
+      url: "#"
+      download: true
+      newPage: false
+    socialLinks:
+      fontAwesomeIcons:
+        - icon: fab fa-github
+          url: https://example.com
+        - icon: fab fa-x-twitter
+          url: https://example.com
+      customIcons:
+        - icon: /fav.png
+          url: "https://example.com"
+```
+
+<Tip>
+  The hero section supports per-language overrides. Place any of the text fields (`intro`, `title`, `subtitle`, `content`, `button.name`) under the language-specific `params.hero` block in your `languages` configuration to display translated content for each locale. See the i18n documentation for details.
+</Tip>

@@ -1,20 +1,96 @@
 ---
-title: "Introduction"
-description: "Welcome to your project"
+title: "Hugo Profile: Mobile-First Portfolio Theme"
+sidebarTitle: "Home"
+description: "Hugo Profile is a highly customizable, mobile-first Hugo theme for personal portfolios and blogs. Get your site live in minutes."
 ---
 
-Write a short description of your product here. What it does, who it's for, and what they can accomplish with it.
+Hugo Profile is an open-source Hugo theme designed for developers and creatives who want a beautiful, fast personal portfolio and blog. It ships with pre-built sections for your hero intro, work experience, education, projects, achievements, and contact form — all configurable through a single `hugo.yaml` file.
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Get your Hugo Profile site running in under 5 minutes with the example site template.
+  </Card>
+  <Card title="Installation" icon="download" href="/installation">
+    Install as a Git clone or submodule and configure the theme for your project.
+  </Card>
+  <Card title="Configuration" icon="sliders" href="/configuration/overview">
+    Explore every `hugo.yaml` parameter — colors, fonts, navbar, and more.
+  </Card>
+  <Card title="Sections" icon="layout-grid" href="/sections/hero">
+    Configure each homepage section: Hero, About, Experience, Projects, and more.
+  </Card>
+</CardGroup>
+
+## What's Included
+
+Hugo Profile provides a complete set of features out of the box:
+
+<CardGroup cols={3}>
+  <Card title="Responsive Layout" icon="mobile">
+    Mobile-first design that looks great on every screen size.
+  </Card>
+  <Card title="Light / Dark Mode" icon="moon">
+    Built-in theme toggle with auto detection from the OS.
+  </Card>
+  <Card title="i18n Support" icon="globe">
+    Multilingual support with English, Spanish, and French included.
+  </Card>
+  <Card title="Blog" icon="pencil">
+    Integrated blog with reading time, scroll progress, tags, and social share.
+  </Card>
+  <Card title="Image Gallery" icon="images">
+    Full-screen gallery with viewer.js lightbox integration.
+  </Card>
+  <Card title="Contact Form" icon="envelope">
+    FormSpree-powered contact form — no server required.
+  </Card>
+</CardGroup>
+
+## Get Started in 4 Steps
+
+<Steps>
+  <Step title="Create a Hugo site">
+    ```bash
+    hugo new site my-portfolio --format="yaml"
+    ```
+  </Step>
+  <Step title="Add the theme">
+    ```bash
+    cd my-portfolio
+    git init
+    git submodule add https://github.com/gurusabarish/hugo-profile.git themes/hugo-profile
+    ```
+  </Step>
+  <Step title="Copy the example config">
+    ```bash
+    cp -f themes/hugo-profile/exampleSite/hugo.yaml ./hugo.yaml
+    ```
+  </Step>
+  <Step title="Start the dev server">
+    ```bash
+    hugo server
+    ```
+    Open [http://localhost:1313](http://localhost:1313) to see your portfolio.
+  </Step>
+</Steps>
 
 <Tip>
-  Ready to make this your own? Start by editing this page. Update your `docs.json` file to customize your site. Then fill out the [Quickstart](/quickstart) page.
+  Copy the example content and static assets for a complete starting point: `rsync -av themes/hugo-profile/exampleSite/static/ ./static/ && rsync -av themes/hugo-profile/exampleSite/content/ ./content/`
 </Tip>
 
-<Card title="Quickstart" icon="rocket" href="/quickstart">
-  This card links to the quickstart page in your project.
-</Card>
-<Card title="Components" icon="puzzle-piece" href="https://mintlify.com/docs/components">
-  Add cards, callouts, steps, tabs, and more to design and structure your pages.
-</Card>
-<Card title="Settings" icon="gear" href="https://mintlify.com/docs/organize/settings">
-  Set your site name, branding, and navigation in the `docs.json` file.
-</Card>
+## Explore the Docs
+
+<CardGroup cols={2}>
+  <Card title="Hero Section" icon="star" href="/sections/hero">
+    Set up your name, subtitle, image, resume button, and social links.
+  </Card>
+  <Card title="Experience & Education" icon="briefcase" href="/sections/experience">
+    Document your work history and academic background.
+  </Card>
+  <Card title="Internationalization" icon="language" href="/features/i18n">
+    Add multilingual support and customize translation strings.
+  </Card>
+  <Card title="Deploy to Netlify" icon="cloud" href="/deployment/netlify">
+    Go live in one click with Netlify's continuous deployment.
+  </Card>
+</CardGroup>

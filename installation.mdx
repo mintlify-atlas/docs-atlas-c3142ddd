@@ -1,0 +1,145 @@
+---
+title: "Install Hugo Profile Theme"
+sidebarTitle: "Installation"
+description: "Install Hugo Profile as a Git submodule or Git clone into your Hugo site. Learn when to use each method and how to verify your installation."
+---
+
+Hugo Profile can be installed in two ways: as a **Git submodule** or as a direct **Git clone** into your site's `themes/` directory. The submodule approach is recommended for most users — it keeps your site repository clean and lets you pull upstream theme updates with a single command. The clone approach is better suited to situations where you intend to modify the theme's template files or layouts directly, since those changes won't be overwritten by an update command.
+
+## Requirements
+
+Before installing Hugo Profile, make sure you have the following:
+
+- **Hugo 0.87.0 or higher** — check your version with `hugo version`
+- **Git** — required to fetch the theme from GitHub
+
+<Note>
+  Hugo Profile requires Hugo **0.87.0 or higher**. Run `hugo version` to confirm your installed version. If Hugo is not installed, follow the [official installation guide](https://gohugo.io/installation/) for your operating system.
+</Note>
+
+## Install the Theme
+
+First, create a new Hugo site if you haven't already. Using `--format="yaml"` generates a `hugo.yaml` config file, which matches the format of Hugo Profile's example configuration:
+
+```bash
+hugo new site my-portfolio --format="yaml"
+cd my-portfolio
+```
+
+Then install the theme using your preferred method:
+
+<Tabs>
+  <Tab title="Git Submodule (recommended)">
+    A Git submodule records a reference to the Hugo Profile repository inside your own repository. This means your site repo stays lightweight and you can update the theme independently of your content.
+
+    **Initialize your repository and add the submodule:**
+
+    ```bash
+    git init
+    git submodule add https://github.com/gurusabarish/hugo-profile.git themes/hugo-profile
+    ```
+
+    Git will clone the theme into `themes/hugo-profile/` and create a `.gitmodules` file that tracks the reference.
+
+    **When cloning your site on another machine**, restore the submodule with:
+
+    ```bash
+    git submodule update --init --recursive
+    ```
+
+    **To update the theme to the latest version** at any time:
+
+    ```bash
+    git submodule update --remote themes/hugo-profile
+    ```
+  </Tab>
+  <Tab title="Git Clone">
+    Cloning copies the full theme repository directly into your `themes/` directory. Use this approach if you want to freely edit the theme's layout templates, partials, or stylesheets without worrying about merge conflicts during updates.
+
+    ```bash
+    cd themes
+    git clone https://github.com/gurusabarish/hugo-profile.git
+    cd ..
+    ```
+
+    The theme will be available at `themes/hugo-profile/` relative to your site root.
+
+    <Note>
+      When using a plain clone, updates must be managed manually. Navigate to `themes/hugo-profile/` and run `git pull` to fetch the latest changes. Be aware that any local edits to theme files may conflict with upstream changes.
+    </Note>
+  </Tab>
+</Tabs>
+
+## Configure the Theme
+
+Open `hugo.yaml` at the root of your site and set the `theme` key to `hugo-profile`:
+
+```yaml
+theme: hugo-profile
+```
+
+If you created your site with the `hugo new site` command, a minimal `hugo.yaml` already exists. You can either edit it manually or replace it entirely with the example configuration in the next step.
+
+## Copy the Example Configuration
+
+Hugo Profile ships with a fully populated `hugo.yaml` that configures every section — Hero, About, Experience, Education, Projects, Achievements, Contact, navbar, footer, and more. Copy it to your site root to get started immediately:
+
+```bash
+cp -f themes/hugo-profile/exampleSite/hugo.yaml ./hugo.yaml
+```
+
+This overwrites the minimal config Hugo generated. You can then open `hugo.yaml` and replace the placeholder content with your own details.
+
+## Verify the Installation
+
+Start the Hugo development server to confirm everything is wired up correctly:
+
+```bash
+hugo server
+```
+
+Open [http://localhost:1313](http://localhost:1313) in your browser. If the theme is installed and configured correctly, you'll see the Hugo Profile example site. If Hugo reports errors in the terminal, double-check that:
+
+- The `theme: hugo-profile` line is present in `hugo.yaml`
+- The theme directory exists at `themes/hugo-profile/`
+- Your Hugo version is 0.87.0 or higher (`hugo version`)
+
+## Copy Example Content and Assets
+
+On first run, images may be missing and the Blog or Gallery sections may not appear. Hugo expects static files in the root `static/` folder and content pages in the root `content/` folder, but the example files live inside the theme's `exampleSite/` directory. Copy them across with:
+
+```bash
+rsync -av themes/hugo-profile/exampleSite/static/ ./static/
+rsync -av themes/hugo-profile/exampleSite/content/ ./content/
+```
+
+Refresh your browser after running these commands — the complete site will render with all sections and images.
+
+## Updating the Theme
+
+### Submodule installations
+
+To pull the latest theme version:
+
+```bash
+git submodule update --remote themes/hugo-profile
+```
+
+Commit the updated submodule reference to your repository afterward:
+
+```bash
+git add themes/hugo-profile
+git commit -m "Update hugo-profile theme"
+```
+
+### Clone installations
+
+Navigate into the theme directory and pull the latest changes:
+
+```bash
+cd themes/hugo-profile
+git pull
+cd ../..
+```
+
+Review any changes to the theme files before pulling if you have made local modifications, as upstream changes may conflict with your edits.
